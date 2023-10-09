@@ -21,16 +21,16 @@ const NavBarLast = () => {
           <ul className="navbar-nav mx-auto">
             
             <li className="nav-item">
-              <Link className="nav-link" to="/">HOME</Link>
+              <Link className="nav-link" to="/home">HOME</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/grievance">GRIEVANCE</Link>
+              <Link className="nav-link" to="/new">GRIEVE</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/followup">PROGRESS</Link>
+              <Link className="nav-link" to="/open">RECORDS</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/closed">CLOSURE</Link>
+              <Link className="nav-link" to="/closure">CLOSURE</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/faq">FAQ</Link>

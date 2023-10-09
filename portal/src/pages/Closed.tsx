@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
-import FollowupTable from '../components/FollowupTable'
+import FollowupTable from '../features/grievance/components/FollowupTable'
 import Meta from '../components/Meta'
 
 const Closed = () => {

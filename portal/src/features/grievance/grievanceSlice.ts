@@ -11,6 +11,7 @@ interface Grievance {
     description: string
     nature: string
     severity: string
+    client: string
     who: string
     what: string
     where: string
@@ -20,8 +21,11 @@ interface Grievance {
     language: string
     attachment: string
     griever: string
-    status: string
-
+    grievance_status: string
+    created_date: string
+    updated_date:string
+    created_by: string
+    updated_by: string
     
 }
 
@@ -40,6 +44,7 @@ const initialState: GrievanceState = {
                         "description": "tokea mwaka juzi sijapaata feedback please comply",
                         "nature": "complaint",
                         "severity": "5",
+                        "client": "1",
                         "who": "2023-09-28 00:57:52.322984",
                         "what": "12/03/2023",
                         "where": "1",
@@ -49,8 +54,11 @@ const initialState: GrievanceState = {
                         "language": "swaheng",
                         "attachment": "a.png",
                         "griever": "1",
-                        "status": "1",
-
+                        "grievance_status": "1",
+                        'created_date': '',
+                        'updated_date': '',
+                        'created_by': '',
+                        'updated_by': ''
 
                         
                     },
@@ -62,6 +70,7 @@ const initialState: GrievanceState = {
                         "description": "Hali mbaya ya dunia huku mwongozo",
                         "nature": "complaint",
                         "severity": "5",
+                        "client": "2",
                         "who": "2023-09-28 00:57:52.322984",
                         "what": "12/03/2023",
                         "where": "1",
@@ -71,8 +80,11 @@ const initialState: GrievanceState = {
                         "language": "swaheng",
                         "attachment": "b.png",
                         "griever": "1",
-                        "status": "1",
-                        
+                        "grievance_status": "1",
+                        'created_date': '',
+                        'updated_date': '',
+                        'created_by': '',
+                        'updated_by': ''
 
                     },
 
@@ -83,6 +95,7 @@ const initialState: GrievanceState = {
                         "description": "Maji hayo yanaletwa na kiwanda kimoja hivi sikitaji",
                         "nature": "complaint",
                         "severity": "5",
+                        "client": "3",
                         "who": "2023-09-28 00:57:52.322984",
                         "what": "12/03/2023",
                         "where": "1",
@@ -92,8 +105,11 @@ const initialState: GrievanceState = {
                         "language": "swaheng",
                         "attachment": "c.png",
                         "griever": "1",
-                        "status": "1",
-
+                        "grievance_status": "1",
+                        'created_date': '',
+                        'updated_date': '',
+                        'created_by': '',
+                        'updated_by': ''
 
                         
                     },
@@ -104,6 +120,7 @@ const initialState: GrievanceState = {
                         "description": "imekuwa tatizo kubwa sana",
                         "nature": "complaint",
                         "severity": "5",
+                        "client": "3",
                         "who": "2023-09-28 00:57:52.322984",
                         "what": "12/03/2023",
                         "where": "1",
@@ -113,7 +130,11 @@ const initialState: GrievanceState = {
                         "language": "swaheng",
                         "attachment": "d.png",
                         "griever": "1",
-                        "status": "1",
+                        "grievance_status": "1",
+                        'created_date': '',
+                        'updated_date': '',
+                        'created_by': '',
+                        'updated_by': ''
                       
                     }
                 ],
@@ -123,53 +144,88 @@ const initialState: GrievanceState = {
 // LOGICS
 
 
+
+
 // SLICE
 export const grievanceSlice = createSlice({
     name: "Grievance",
     initialState,
     reducers: {
-        createGrievance(state, action){
-            let data = action.payload
+        createGrievance: {
+            reducer: (state, action: PayloadAction<Grievance>) => {
+                console.log(action.payload)
+                let data = action.payload
            
-            let grievance = {
-                'grievance_id': nanoid(),
-                'date': String(Date.now()),
-                'title': data.title,
-                'description': data.description,
-                'nature': data.nature,
-                'severity': data.severity,
-                'who': data.who,
-                'what': data.what,
-                'where': data.where,
-                'result': data.result,
-                'comment': data.comment,
-                'channel': 'Portal',
-                'language': 'Swahili',
-                'attachment': data.attachment,
-                'griever': nanoid(),
-                'status': 'New',
+                let grievance = {
+                    'grievance_id': nanoid(),
+                    'date': data.date,
+                    'title': data.title,
+                    'description': data.description,
+                    'nature': data.nature,
+                    'severity': data.severity,
+                    'client': data.client,
+                    'who': data.who,
+                    'what': data.what,
+                    'where': data.where,
+                    'result': data.result,
+                    'comment': data.comment,
+                    'channel': data.channel,
+                    'language': data.language,
+                    'attachment': data.attachment,
+                    'griever': data.griever,
+                    'grievance_status': data.grievance_status,
+                    'created_date': '',
+                    'updated_date': '',
+                    'created_by': '',
+                    'updated_by': ''
 
+                }
+                state.grievances.push(grievance)
+
+                
+                // define tracker payload
+                let tracker = {
+                    'tracker_id': nanoid(),
+                    'griever': grievance.griever,
+                    'grievance': grievance.grievance_id,
+                    'client': data.client,
+                    'start_date': Date.now(),
+                }
+
+                console.log(grievance)
+                console.log()
+                console.log(tracker)
+
+
+            }, 
+            prepare: ( date, title, description, nature, severity, client, who, what, where, result, comment, channel, language, attachment, griever, grievance_status, created_date, updated_date, created_by, updated_by) =>{
+                return {
+                    payload: {
+                        grievance_id: nanoid(),
+                        date,
+                        title,
+                        description,
+                        nature,
+                        severity,
+                        client,
+                        who,
+                        what,
+                        where,
+                        result,
+                        comment,
+                        channel,
+                        language,
+                        attachment,
+                        griever,
+                        grievance_status,
+                        created_date,
+                        updated_date,
+                        created_by,
+                        updated_by
+                    }
+                }
             }
-            state.grievances.push(grievance)
-
-            
-            // define tracker payload
-            let tracker = {
-                'tracker_id': nanoid(),
-                'griever': grievance.griever,
-                'grievance': grievance.grievance_id,
-                'client': data.client,
-                'start_date': Date.now(),
-            }
-
-            console.log(grievance)
-            console.log()
-            console.log(tracker)
-
-
-            
         }
-
     },
     extraReducers: (builder) => {
 

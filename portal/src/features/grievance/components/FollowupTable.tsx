@@ -1,17 +1,36 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from '../../../app/hooks'
+import { selectAllClients } from '../../client/clientSlice'
 
 
 const FollowupTable = (props:any) => {
   let tableHead: any
   let tableRow:any
   
+  const clients = Array(useAppSelector(selectAllClients))[0].clients
+  let client = clients.find(client => client.client_id === '1')
+  // console.log(client)
+
+  let grievances = props.data.grievances
+
+  let single_client: any
+  for (let index = 0; index < grievances.length; index++) {
+    if (clients.find(client => client.client_id === grievances[index].client)){
+      single_client = clients.find(client => client.client_id === grievances[index].client)
+      break
+    }
+
+  }
+
+  
+  const fetchGrievance = (e: any) => {
+    console.log(e)
+  }
 
   
   if (props.data.grievances !== null){
-      console.log(props.data.grievances)
-      console.log(props.data.status)
-
+  
       tableHead = (
                     <tr>
                       <th >Index</th>
@@ -25,34 +44,25 @@ const FollowupTable = (props:any) => {
         
       tableRow = props.data.grievances.map( (grievance: any) => 
         (
-          <tr>
+          
+          <tr key={grievance.grievance_id}>
               <td>
-                <Link data-bs-toggle="offcanvas" to="#modalShoppingCart">{grievance.grievance_id}</Link>
+                <Link to="/single">{grievance.grievance_id}</Link>
               </td>
               <td>
                 {grievance.title}
               </td>
               <td>
-                {grievance.nature}
+                {single_client?.name}
               </td>
               <td>
                 {grievance.severity}
               </td>
               <td>
-                {grievance.channel}
+                {grievance.grievance_status}
               </td>
               <td style={{alignContent: 'center'}}>  
-                <div className='row'>
-                  <div className='col-4' style={{marginLeft:-6, marginRight:-6}}>
-                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart"><i className="fa-regular fa-eye"></i></Link>
-                  </div>
-                  <div className='col-4' style={{marginRight:-6, marginLeft:-6,}}>
-                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart"><i className="fa-regular fa-pen-to-square"></i></Link>
-                  </div>
-                  <div className='col-4' style={{marginLeft:-6,marginRight:-6,}}>
-                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart"> <i className="fa-solid fa-trash-can"></i></Link>
-                  </div>
-                </div>
+                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart" onClick={fetchGrievance}><i className="fa-regular fa-eye"></i></Link>
               </td>
             </tr>
           )

@@ -13,7 +13,7 @@ const Breadcrumb = (props: any) => {
 
             <ol className="breadcrumb mb-0 fs-xs text-gray-400">
               <li className="breadcrumb-item">
-                <Link className="text-gray-400" to="/">Home</Link>
+                <Link className="text-gray-400" to="/">Cover</Link>
               </li>
               <li className="breadcrumb-item active">
                 {title}
