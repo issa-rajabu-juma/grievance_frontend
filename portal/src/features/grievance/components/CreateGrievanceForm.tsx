@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 // import { useDispatch } from 'react-redux'
 import { nanoid } from '@reduxjs/toolkit'
 import { createGrievance } from '../grievanceSlice'
-import { useAppDispatch } from "../../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { selectAllClients } from '../../client/clientSlice'
+import { selectAllGrievers } from '../../griever/grieverSlice'
 
 
-const clients = [{'id': 1, 'name':"TANESCO"}, {'id': 2, 'name':"CMS"}, {'id': 3, 'name':"TTS"}]
+const clients = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
 const natures = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
 const severities = [{'id': 1, 'name':"Low"}, {'id': 2, 'name':"Medium"}, {'id': 3, 'name':"High"}]
 
@@ -22,14 +24,30 @@ const CreateGrievanceForm = () => {
     const [result, setResult] = useState('')
     const [comment, setComment] = useState('')
     const [attachment, setAttachment] = useState('')
+    const [date, setDate] = useState('')
+    const [griever, setGriever] = useState('')
+    const [channel, setChannel] = useState('')
+    const [language, setLanguage] = useState('')
+    const [grievance_status, setGrievanceStatus] = useState('')
+    const [updated_date, setUpdatedDate] = useState('')
+    const [created_by, setCreatedBy] = useState('')
+    const [created_date, setCreatedDate] = useState('')
+    const [updated_by, setUpdatedBy] = useState('')
+
+
     
     // declare dispatch
     const dispatch = useAppDispatch()
 
+    // selectors
+    const clientss = useAppSelector(selectAllClients)
+    const grieverr = useAppSelector(selectAllGrievers)
+
+
     // set choices
     const clientOptions = (
-        clients.map((clientee:any) => (
-            <option value={clientee.id} key={clientee.id}>{clientee.name}</option>
+         Object.keys(clientss.clients).map((clientee:any) => (
+            <option value={clientss.clients[clientee].client_id} key={clientss.clients[clientee].client_id}>{clientss.clients[clientee].name}</option>
         ))
     )
 
@@ -44,6 +62,8 @@ const CreateGrievanceForm = () => {
             <option value={severity.id} key={severity.id}>{severity.name}</option>
         ))
     )
+
+    const canSave = Boolean(title) && Boolean(description) && Boolean(client)
     
 
     // handle on change to set out local state
@@ -62,8 +82,11 @@ const CreateGrievanceForm = () => {
     // submit form
     const onCreateGrievance = () => {
         if (title && client && nature && description && severity){
+          
+
             dispatch(
-                createGrievance({
+                createGrievance(
+                    date,
                     title,
                     description,
                     nature,
@@ -73,9 +96,18 @@ const CreateGrievanceForm = () => {
                     what,
                     where,
                     comment,
+                    channel,
+                    language,
                     result,
                     attachment,
-                    })
+                    griever,
+                    grievance_status,
+                    created_date,
+                    updated_date,
+                    created_by,
+                    updated_by
+
+                    )
             )
 
             setClient('')
@@ -89,6 +121,15 @@ const CreateGrievanceForm = () => {
             setComment('')
             setResult('')
             setAttachment('')
+            setDate('')
+            setGriever('')
+            setChannel('')
+            setLanguage('')
+            setGrievanceStatus('')
+            setUpdatedDate('')
+            setCreatedBy('')
+            setCreatedDate('')
+            setUpdatedBy('')
 
 
         }
@@ -97,7 +138,7 @@ const CreateGrievanceForm = () => {
     
     return (
         <>
-            <form>
+            <form style={{paddingTop:0.5 + 'em'}}>
                 <div className="row">
                     <div className="col-12 col-md-12">
                         <div className="form-group">
@@ -205,7 +246,7 @@ const CreateGrievanceForm = () => {
                     </div>
 
                     <div className="col-12 text-center">
-                        <button className="btn btn-dark" onClick={onCreateGrievance}>Submit</button>
+                        <button className="btn btn-dark" onClick={onCreateGrievance} disabled={!canSave}>Submit</button>
                     </div>
                 </div>
             </form>

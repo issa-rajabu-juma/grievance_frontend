@@ -18,7 +18,7 @@ const Search = () => {
               <div className="form-group">
                 <label className="visually-hidden" htmlFor="modalSearchCategories">Categories:</label>
                 <select className="form-select" id="modalSearchCategories">
-                  <option selected>All Categories</option>
+                  <option defaultValue={''}>All Categories</option>
                   <option>Women</option>
                   <option>Men</option>
                   <option>Kids</option>
