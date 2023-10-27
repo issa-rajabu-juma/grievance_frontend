@@ -1,14 +1,46 @@
 import React from 'react'
 import FollowupTable from '../../FollowupTable'
-import { useSelector } from 'react-redux'
-import { selectAllGrievances } from '../../../../grievance/grievanceSlice'
-
+import { 
+  selectAllGrievances, 
+  selectGrievanceStatus, 
+  selectGrievanceError,
+  fetchGrievances 
+} from '../../../../grievance/grievanceSlice'
+import { 
+  useAppDispatch, 
+  useAppSelector 
+} from '../../../../../app/hooks'
+import { useEffect } from 'react'
 
 const Open = () => {
-  const grievances = useSelector(selectAllGrievances)
+  const dispatch = useAppDispatch()
+
+  const grievances = useAppSelector(selectAllGrievances)
+  const status = useAppSelector(selectGrievanceStatus)
+  const error = useAppSelector(selectGrievanceError)
+  console.log(grievances)
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchGrievances())
+    }
+  }, [status, dispatch])
+
+  console.log(status)
+  let content
+
+  if (status === 'loading') {
+    content = <p>'Loading...'</p>
+  }else if (status === 'succeeded') {
+    content = <FollowupTable data={grievances} />
+  }else if (status === 'failed') {
+    content = <p>{error}</p>
+  }
 
   return (
-    <FollowupTable data={grievances} />
+    <>
+      {content}
+    </>
   )
 }
 

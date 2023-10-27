@@ -1,5 +1,5 @@
 // IMPORTS
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 
 
@@ -28,58 +28,16 @@ interface Griever{
 
 export interface GrieverState {
     grievers: Griever[],
-    status: 'idle' | 'loading' | 'failed'
+    status: any,
+    errors: any
+
 }
 
 // INITIAL STATE
 const initialState: GrieverState = {
-    grievers: [
-        {
-            "griever_id": '1',
-            "f_name": "TAJR",
-            "m_name": "RICKSON",
-            "l_name": "NTUKYU",
-            "gender": "MALE",
-            "age": "27",
-            "mobile_no": "12345",
-            "street": "MWONGOZO",
-            "ward": "BAMBA",
-            "district": "KGM",
-            "region": "DSM",
-            "anonymous": "0",
-            "marital_status": "1",
-            "spouse": "MARIA",
-            "next_kin": "ROJA",
-            "created_date": "01/01/2023",
-            "updated_date": "01/01/2023",
-            "created_by": "1",
-            "updated_by": "1"
-        },
-
-        {
-            "griever_id": '2',
-            "f_name": "ds",
-            "m_name": "ds",
-            "l_name": "fdf",
-            "gender": "MALE",
-            "age": "27",
-            "mobile_no": "12345",
-            "street": "MWONGOZO",
-            "ward": "BAMBA",
-            "district": "KGM",
-            "region": "DSM",
-            "anonymous": "0",
-            "marital_status": "1",
-            "spouse": "MARIA",
-            "next_kin": "ROJA",
-            "created_date": "01/01/2023",
-            "updated_date": "01/01/2023",
-            "created_by": "1",
-            "updated_by": "1"
-        }
-    
-    ],
-    status: 'idle'
+    grievers: [],
+    status: 'idle',
+    errors: null
 }
 
 // LOGICS
@@ -89,12 +47,45 @@ const initialState: GrieverState = {
 export const grieverSlice = createSlice({
     name: 'Griever',
     initialState,
-    reducers: {},
-    extraReducers: {}
+    reducers: {
+        registerGriever: {
+            reducer: (state, action: PayloadAction<Griever>) => {
+                console.log(action.payload)
+            },
+            prepare: (f_name, m_name, l_name, gender, age,  mobile_no, street, ward, district, region, anonymous, marital_status, spouse, next_kin, created_date, updated_date, created_by, updated_by) => {
+                return {
+                    payload: {
+                        griever_id: nanoid(),
+                        f_name,
+                        m_name,
+                        l_name,
+                        gender,
+                        age,
+                        mobile_no,
+                        street,
+                        ward,
+                        district,
+                        region,
+                        anonymous,
+                        marital_status,
+                        spouse,
+                        next_kin,
+                        created_date,
+                        updated_date,
+                        created_by,
+                        updated_by
+}
+                    }
+                }
+            }
+        }
+    ,
+    extraReducers: (builder) =>{}
 })
 
 // EXPORTS
 // actions
+export const { registerGriever } = grieverSlice.actions
 
 // selectors
 export const selectAllGrievers = (state: RootState) => state.grievers

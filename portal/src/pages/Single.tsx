@@ -7,12 +7,19 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import FollowupTable from '../features/grievance/components/FollowupTable'
 import { selectAllGrievances } from '../features/grievance/grievanceSlice'
+import AttachmentTable from '../features/grievance/components/AttachmentTable'
+import { store } from '../app/store'
 
 
 const Single = () => {
+  const state = store.getState()
+
+  if (!state.user.isAuthenticated) {
+    return <Navigate to='/login' />
+  }
    const grievances = useSelector(selectAllGrievances)
    
   return (
@@ -22,13 +29,13 @@ const Single = () => {
         <Breadcrumb title='Single'/>
         <section className="pt-7 pb-12">
           <div className="container">
-            <Heading />
+            <Heading heading={'Grievance Details'} />
             <div className="row">
               <div className="col-12 col-md-3">
                 <RightNav />
               </div>
 
-              <div className="col-12 col-md-9 col-lg-8 offset-lg-1">
+              <div className="col-12 col-md-9 col-lg-8 offset-lg-1"  data-simplebar style={{maxHeight: 700 + "px"}}>
                 <div className="row">
                   <div className="col-12 col-lg-12">
 
@@ -71,12 +78,12 @@ const Single = () => {
                                 </div>
                                 <div className="col-6 col-lg-3">
 
-                                  <h6 className="heading-xxxs text-muted">Last update:</h6>
+                                  <h6 className="heading-xxxs text-muted">Priority:</h6>
 
                                   
                                   <p className="mb-lg-0 fs-sm fw-bold">
                                     <time datetime="2019-10-01">
-                                      01 Oct, 2019
+                                      High
                                     </time>
                                   </p>
 
@@ -116,6 +123,11 @@ const Single = () => {
                          <Link className="btn btn-xs btn-circle btn-white-primary" to="/new">
                             <i className="fe fe-edit-2"></i>
                           </Link>
+                          
+                          <Link className="btn btn-xs btn-circle btn-white-primary" data-bs-toggle="offcanvas" to="#modalShoppingCart">
+                            <i className="fa-regular fa-message"></i>
+                            </Link>
+
                           <button className="btn btn-xs btn-circle btn-white-primary">
                             <i className="fe fe-x"></i>
                           </button>
@@ -203,7 +215,7 @@ const Single = () => {
 
                         
                         <p className="text-muted mb-0">
-                          <FollowupTable data={grievances} />
+                          <AttachmentTable data={grievances} />
                         </p>
 
                        

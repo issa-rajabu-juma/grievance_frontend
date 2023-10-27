@@ -10,20 +10,35 @@ const Search = () => {
           </button>
         
           <div className="offcanvas-header lh-fixed fs-lg">
-            <strong className="mx-auto">Search Products</strong>
+            <strong className="mx-auto">Search</strong>
           </div>
         
           <div className="offcanvas-body">
             <form>
-              <div className="form-group">
-                <label className="visually-hidden" htmlFor="modalSearchCategories">Categories:</label>
+              <div className="row">
+                <div className="col-md-6">
+                   <div className="form-group">
                 <select className="form-select" id="modalSearchCategories">
-                  <option defaultValue={''}>All Categories</option>
-                  <option>Women</option>
-                  <option>Men</option>
-                  <option>Kids</option>
+                  <option>Status</option>
+                  <option>Open</option>
+                  <option>Ongoing</option>
+                  <option>Resolved</option>
                 </select>
               </div>
+                </div>
+                <div className="col-md-6">
+                   <div className="form-group">
+                <select className="form-select" id="modalSearchCategories2">
+                  <option>Severity</option>
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
+              </div>
+                </div>
+              
+              </div>
+             
               <div className="input-group input-group-merge">
                 <input className="form-control" type="search" placeholder="Search" />
                 <div className="input-group-append">
@@ -40,82 +55,47 @@ const Search = () => {
             <p>Search Results:</p>
         
             <div className="row align-items-center position-relative mb-5">
-              <div className="col-4 col-md-3">
-        
-                <img className="img-fluid" src="assets/img/products/product-5.jpg" alt="..." />
-        
-              </div>
               <div className="col position-static">
-        
                 <p className="mb-0 fw-bold">
-                  <a className="stretched-link text-body" href="product.html">Leather mid-heel Sandals</a> <br />
-                  <span className="text-muted">$129.00</span>
+                  <a className="stretched-link text-body" href="product.html">Malalamiko ya wafugaji</a> <br />
+                  <span className="text-muted">Issa Rajabu Juma - Mwanza</span>
                 </p>
-        
               </div>
+              <hr />
             </div>
+
+             <div className="row align-items-center position-relative mb-5">
+              <div className="col position-static">
+                <p className="mb-0 fw-bold">
+                  <a className="stretched-link text-body" href="product.html">Malalamiko ya wafugaji</a> <br />
+                  <span className="text-muted">Issa Rajabu Juma - Mwanza</span>
+                </p>
+              </div>
+              <hr />
+            </div>
+
             <div className="row align-items-center position-relative mb-5">
-              <div className="col-4 col-md-3">
-        
-                <img className="img-fluid" src="assets/img/products/product-6.jpg" alt="..." />
-        
-              </div>
               <div className="col position-static">
-        
                 <p className="mb-0 fw-bold">
-                  <a className="stretched-link text-body" href="product.html">Cotton floral print Dress</a> <br />
-                  <span className="text-muted">$40.00</span>
+                  <a className="stretched-link text-body" href="product.html">Malalamiko ya wafugaji</a> <br />
+                  <span className="text-muted">Issa Rajabu Juma - Mwanza</span>
                 </p>
-        
               </div>
+              <hr />
             </div>
+
             <div className="row align-items-center position-relative mb-5">
-              <div className="col-4 col-md-3">
-        
-                <img className="img-fluid" src="assets/img/products/product-7.jpg" alt="..." />
-        
-              </div>
               <div className="col position-static">
-        
                 <p className="mb-0 fw-bold">
-                  <a className="stretched-link text-body" href="product.html">Leather Sneakers</a> <br />
-                  <span className="text-primary">$85.00</span>
+                  <a className="stretched-link text-body" href="product.html">Malalamiko ya wafugaji</a> <br />
+                  <span className="text-muted">Issa Rajabu Juma - Mwanza</span>
                 </p>
-        
               </div>
+              <hr />
             </div>
-            <div className="row align-items-center position-relative mb-5">
-              <div className="col-4 col-md-3">
+           
         
-                <img className="img-fluid" src="assets/img/products/product-8.jpg" alt="..." />
-        
-              </div>
-              <div className="col position-static">
-        
-                <p className="mb-0 fw-bold">
-                  <a className="stretched-link text-body" href="product.html">Cropped cotton Top</a> <br />
-                  <span className="text-muted">$29.00</span>
-                </p>
-        
-              </div>
-            </div>
-            <div className="row align-items-center position-relative mb-5">
-              <div className="col-4 col-md-3">
-        
-                <img className="img-fluid" src="assets/img/products/product-9.jpg" alt="..." />
-        
-              </div>
-              <div className="col position-static">
-        
-                <p className="mb-0 fw-bold">
-                  <a className="stretched-link text-body" href="product.html">Floral print midi Dress</a> <br />
-                  <span className="text-muted">$50.00</span>
-                </p>
-        
-              </div>
-            </div>
-        
-            <a className="btn btn-link px-0 text-reset" href="shop.html">
+            <a className="btn btn-link px-0 text-reset" href="#">
               View All <i className="fe fe-arrow-right ms-2"></i>
             </a>
         

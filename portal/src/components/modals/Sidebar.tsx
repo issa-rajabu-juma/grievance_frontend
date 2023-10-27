@@ -36,46 +36,14 @@ const Sidebar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/faq">FAQ</Link>
               </li>
+               <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
             </ul>
         
           </div>
         
-          <div className="moda-body px-10 py-9">
-        
-            <ul className="list-inline">
-              <li className="list-inline-item">
-                <Link className="text-gray-350" to="#!">
-                  <i className="fab fa-facebook-f"></i>
-                </Link>
-              </li>
-              <li className="list-inline-item">
-                <Link className="text-gray-350" to="#!">
-                  <i className="fab fa-youtube"></i>
-                </Link>
-              </li>
-              <li className="list-inline-item">
-                <Link className="text-gray-350" to="#!">
-                  <i className="fab fa-twitter"></i>
-                </Link>
-              </li>
-              <li className="list-inline-item">
-                <Link className="text-gray-350" to="#!">
-                  <i className="fab fa-instagram"></i>
-                </Link>
-              </li>
-              <li className="list-inline-item">
-                <Link className="text-gray-350" to="#!">
-                  <i className="fab fa-medium-m"></i>
-                </Link>
-              </li>
-            </ul>
-        
-            <div className="fs-xxs text-gray-350">
-              © 2019 All rights reserved. Designed by Unvab.
-            </div>
-        
-          </div>
-        
+         
         </div>
     </>
   )

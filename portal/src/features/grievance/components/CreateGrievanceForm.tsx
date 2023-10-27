@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 // import { useDispatch } from 'react-redux'
 import { nanoid } from '@reduxjs/toolkit'
 import { createGrievance } from '../grievanceSlice'
+import { newGrievance } from '../grievanceSlice'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectAllClients } from '../../client/clientSlice'
 import { selectAllGrievers } from '../../griever/grieverSlice'
-
+import { useNavigate } from 'react-router-dom'
 
 const clients = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
 const natures = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
 const severities = [{'id': 1, 'name':"Low"}, {'id': 2, 'name':"Medium"}, {'id': 3, 'name':"High"}]
+
 
 const CreateGrievanceForm = () => {
     // define local state
@@ -33,12 +35,15 @@ const CreateGrievanceForm = () => {
     const [created_by, setCreatedBy] = useState('')
     const [created_date, setCreatedDate] = useState('')
     const [updated_by, setUpdatedBy] = useState('')
+    const [newGrievanceStatus, setNewGrievanceStatus] = useState('idle')
 
 
     
     // declare dispatch
     const dispatch = useAppDispatch()
 
+    const navigate = useNavigate()
+    
     // selectors
     const clientss = useAppSelector(selectAllClients)
     const grieverr = useAppSelector(selectAllGrievers)
@@ -63,7 +68,7 @@ const CreateGrievanceForm = () => {
         ))
     )
 
-    const canSave = Boolean(title) && Boolean(description) && Boolean(client)
+    const canSave = [title, description, client].every(Boolean) && newGrievanceStatus === 'idle'
     
 
     // handle on change to set out local state
@@ -81,34 +86,31 @@ const CreateGrievanceForm = () => {
 
     // submit form
     const onCreateGrievance = () => {
-        if (title && client && nature && description && severity){
-          
+        if (canSave){
+          try {
+            setNewGrievanceStatus('pending')
+            dispatch(newGrievance({
+                grievance_id: Math.random(),
+                title,
+                description,
+                client,
+                what,
+                who,
+                where,
+                result,
+                comment,
+                severity,
+                nature,
+                griever, 
+                channel, 
+                language, 
+                attachment,
+                created_by,
+                updated_by,
+                created_date,
+                updated_date
 
-            dispatch(
-                createGrievance(
-                    date,
-                    title,
-                    description,
-                    nature,
-                    severity,
-                    client,
-                    who,
-                    what,
-                    where,
-                    comment,
-                    channel,
-                    language,
-                    result,
-                    attachment,
-                    griever,
-                    grievance_status,
-                    created_date,
-                    updated_date,
-                    created_by,
-                    updated_by
-
-                    )
-            )
+            })).unwrap()
 
             setClient('')
             setSeverity('')
@@ -130,6 +132,17 @@ const CreateGrievanceForm = () => {
             setCreatedBy('')
             setCreatedDate('')
             setUpdatedBy('')
+            navigate('/open')
+
+          } catch (error) {
+            console.error('Failed to create new grievance', error)
+          }finally{
+            setNewGrievanceStatus('idle')
+          }
+
+
+            
+
 
 
         }
@@ -138,7 +151,7 @@ const CreateGrievanceForm = () => {
     
     return (
         <>
-            <form style={{paddingTop:0.5 + 'em'}}>
+            <form style={{paddingTop:0.5 + 'em'}} >
                 <div className="row">
                     <div className="col-12 col-md-12">
                         <div className="form-group">

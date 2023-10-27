@@ -9,7 +9,7 @@ const FaqList = () => {
 
   return (
     <>
-      <h5 className="mb-7">Orders:</h5>
+      <h5 className="mb-7">Grievances:</h5>
       <ul className="list-group list-group-flush-x mb-9" id="faqCollapseParentOne">
         <li className="list-group-item">
 

@@ -12,7 +12,8 @@ const FollowupTable = (props:any) => {
   let client = clients.find(client => client.client_id === '1')
   // console.log(client)
 
-  let grievances = props.data.grievances
+  let grievances = props.data
+  console.log(grievances)
 
   let single_client: any
   for (let index = 0; index < grievances.length; index++) {
@@ -42,27 +43,32 @@ const FollowupTable = (props:any) => {
                     </tr>
                   )
         
-      tableRow = props.data.grievances.map( (grievance: any) => 
+      tableRow = props.data.map( (grievance: any) => 
         (
           
-          <tr key={grievance.grievance_id}>
+          <tr key={grievance[0].grievance_id}>
               <td>
-                <Link to="/single">{grievance.grievance_id}</Link>
+                <Link to="/single">{grievance[0].grievance_id}</Link>
               </td>
               <td>
-                {grievance.title}
+                {grievance[0].title}
               </td>
               <td>
                 {single_client?.name}
               </td>
               <td>
-                {grievance.severity}
+                {grievance[0].severity}
               </td>
               <td>
-                {grievance.grievance_status}
+                {grievance[0].grievance_status}
               </td>
               <td style={{alignContent: 'center'}}>  
-                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart" onClick={fetchGrievance}><i className="fa-regular fa-eye"></i></Link>
+                    {/* <Link to='/single'><i className="fa-regular fa-eye"></i></Link>
+                    &nbsp;
+                    &nbsp; */}
+                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart" onClick={fetchGrievance}><i className="fa-regular fa-message"></i></Link>
+
+
               </td>
             </tr>
           )
@@ -73,7 +79,29 @@ const FollowupTable = (props:any) => {
   return (
     <div className="card shadow" data-simplebar="">
           <div className="card-body" style={{alignContent:'center'}}>
-            <table className="table table-responsive" style={{tableLayout: 'auto', width: 100 + '%', fontSize: 13 + 'px'}}>
+            <div className="row mb-6">
+              <div className="col-md-6">
+                <select className="form-select form-control form-control-xxs" style={{width:25 + '%'}}>
+                  <option defaultValue={'20'}>20</option>
+                  <option defaultValue={'50'}>30</option>
+                  <option defaultValue={'100'}>100</option>
+                  <option defaultValue={'All'}>All</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+
+                <div className="input-group input-group-merge"  style={{width:50 + '%', marginLeft:50 + '%'}}>
+                  <input className="form-control form-control-xxs" type="search" placeholder="" />
+                  <div className="input-group-append">
+                    <button className="btn btn-outline-border form-control-xxs" type="submit">
+                      <i className="fe fe-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+             
+            </div>
+            <table className="table table-responsive" style={{tableLayout: 'auto', width: 100 + '%', fontSize: 15 + 'px'}}>
             <thead>
                 {tableHead}
             </thead>

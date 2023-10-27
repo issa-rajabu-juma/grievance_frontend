@@ -7,30 +7,37 @@ import { useState } from 'react'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
 import Create from '../features/grievance/components/records/Create'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import New from '../features/grievance/components/records/pages/New'
 import FaqMain from '../features/grievance/components/records/pages/FaqList'
 import FaqList from '../features/grievance/components/records/pages/FaqList'
+import { store } from '../app/store'
 
 
 const FaqMin = () => {
+    const state = store.getState()
+
+  if (!state.user.isAuthenticated) {
+    return <Navigate to='/login' />
+  }
+  
   return (
      <>
-        <Meta title='GRIEVANCE'/>
+        <Meta title='Faq'/>
         <NavBarLast />
-        <Breadcrumb title='Grievance'/>
+        <Breadcrumb title='Faq'/>
        <section className="pt-7 pb-12">
         <div className="container">
           
-          <Heading />
+          <Heading  heading='Frequently Asked Questions'  />
 
           <div className="row">
             <div className="col-12 col-md-3">
-              <RightNav />
+              <RightNav title='Faq'/>
             </div>
-            <div className="col-12 col-md-9 col-lg-8 offset-lg-1">
-                <div className="row justify-content-center">
-                  <div className="col-12 col-lg-10 col-xl-8">
+            <div className="col-12 col-md-9 col-lg-8 offset-lg-1" data-simplebar style={{maxHeight: 700 + "px"}}>
+                <div className="row ">
+                  <div className="col-12 col-lg-12 col-xl-12">
                       <FaqList />
                   </div>
                 </div>

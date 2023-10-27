@@ -17,10 +17,21 @@ const Cover = () => {
                   Better Things In a Better Way
                 </h1>
 
-                <Link className="link-underline text-reset mx-4 my-4" to="/home">HOME</Link>
-                <Link className="link-underline text-reset mx-4 my-4" to="/open">RECORDS</Link>
-                <Link className="link-underline text-reset mx-4 my-4" to="/closure">CLOSURE</Link>
-                <Link className="link-underline text-reset mx-4 my-4" to="/faq">FAQ</Link>
+                <div className="row">
+                  <div className="col-md-3">
+                    <Link className="link-underline text-reset mx-4 my-4" to="/home">HOME</Link>
+                  </div>
+                  <div className="col-md-3">
+                    <Link className="link-underline text-reset mx-4 my-4" to="/open">RECORDS</Link>
+                  </div>
+                  <div className="col-md-3">
+                    <Link className="link-underline text-reset mx-4 my-4" to="/closure">CLOSURE</Link>
+                  </div>
+                  <div className="col-md-3">
+                    <Link className="link-underline text-reset mx-4 my-4" to="/faq">FAQ</Link>
+                  </div>
+                </div>
+
 
               </div>
             </div>

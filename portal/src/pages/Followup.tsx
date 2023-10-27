@@ -4,14 +4,20 @@ import Breadcrumb from '../components/Breadcrumb'
 import FollowupTable from '../features/grievance/components/FollowupTable'
 import Meta from '../components/Meta'
 import { useSelector } from 'react-redux'
-import { RootState } from '../app/store'
+import { RootState, store } from '../app/store'
 import { selectAllGrievances } from '../features/grievance/grievanceSlice'
+import { Navigate } from 'react-router-dom'
 
 
 const Followup = () => {
   const grievances = useSelector(selectAllGrievances)
 
 
+  const state = store.getState()
+
+  if (!state.user.isAuthenticated) {
+    return <Navigate to='/login' />
+  }
 
 
   return (
