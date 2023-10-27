@@ -11,7 +11,7 @@ const Cart = () => {
           </button>
         
           <div className="offcanvas-header lh-fixed fs-lg">
-            <strong className="mx-auto">Your Cart (2)</strong>
+            <strong className="mx-auto">Communication Panel</strong>
           </div>
         
           <ul className="list-group list-group-lg list-group-flush">
@@ -19,64 +19,47 @@ const Cart = () => {
               <div className="row align-items-center">
                 <div className="col-4">
         
-                  <a href="product.html">
-                    <img className="img-fluid" src="assets/img/products/product-6.jpg" alt="..." />
-                  </a>
+                  
+                     <div className="avatar avatar-xxl">
+                      <img src="assets/img/avatars/avatar-1.jpg" alt="..." className="avatar-img rounded-circle" />
+                    </div>
+                    
+                  
         
                 </div>
                 <div className="col-8">
         
-                  <p className="fs-sm fw-bold mb-6">
-                    <a className="text-body" href="product.html">Cotton floral print Dress</a> <br/>
-                    <span className="text-muted">$40.00</span>
+                   <p className="fs-sm fw-bold mb-6">
+                    Sijapata maelezo ya kutosha kwenye majibu yako tafadhari eleza kwa mapana.
                   </p>
-        
-                  <div className="d-flex align-items-center">
-        
-                    <select className="form-select form-select-xxs w-auto">
-                      <option value="1">1</option>
-                      <option value="1">2</option>
-                      <option value="1">3</option>
-                    </select>
-        
-                    <a className="fs-xs text-gray-400 ms-auto" href="#!">
-                      <i className="fe fe-x"></i> Remove
-                    </a>
-        
-                  </div>
+               
         
                 </div>
               </div>
             </li>
             <li className="list-group-item">
               <div className="row align-items-center">
-                <div className="col-4">
-        
-                  <a href="product.html">
-                    <img className="img-fluid" src="assets/img/products/product-10.jpg" alt="..." />
-                  </a>
-        
-                </div>
+               
                 <div className="col-8">
         
                   <p className="fs-sm fw-bold mb-6">
-                    <a className="text-body" href="product.html">Suede cross body Bag</a> <br/>
-                    <span className="text-muted">$49.00</span>
+                    Sijapata maelezo ya kutosha kwenye majibu yako tafadhari eleza kwa mapana.
                   </p>
+                  <p className="fs-xs text-gray-400 ms-auto">
+                   Administrator
+                </p>
         
-                  <div className="d-flex align-items-center">
+                 
         
-                    <select className="form-select form-select-xxs w-auto">
-                      <option value="1">1</option>
-                      <option value="1">2</option>
-                      <option value="1">3</option>
-                    </select>
+                </div>
+
+                 <div className="col-4">
         
-                    <a className="fs-xs text-gray-400 ms-auto" href="#!">
-                      <i className="fe fe-x"></i> Remove
-                    </a>
-        
-                  </div>
+                  
+                    <div className="avatar avatar-xxl">
+                      <img src="assets/img/avatars/avatar-1.jpg" alt="..." className="avatar-img rounded-circle" />
+                    </div>
+                  
         
                 </div>
               </div>
@@ -85,37 +68,13 @@ const Cart = () => {
         
           
           <div className="offcanvas-footer justify-between lh-fixed fs-sm bg-light mt-auto">
-            <strong>Subtotal</strong> <strong className="ms-auto">$89.00</strong>
+            <textarea  className="form-control form-control-sm" id="description"  name="description" rows={4} cols={50} placeholder='Your message here...'></textarea>
           </div>
         
           <div className="offcanvas-body">
-            <a className="btn w-100 btn-dark" href="checkout.html">Continue to Checkout</a>
-            <a className="btn w-100 btn-outline-dark mt-2" href="shopping-cart.html">View Cart</a>
+            <a className="btn w-100 btn-dark" href="checkout.html">Send</a>
           </div>
-        
-          <div className="d-none">
-        
-            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
-              <i className="fe fe-x" aria-hidden="true"></i>
-            </button>
-        
-            <div className="offcanvas-header lh-fixed fs-lg">
-              <strong className="mx-auto">Your Cart (0)</strong>
-            </div>
-        
-            <div className="offcanvas-body flex-grow-0 my-auto">
-        
-              
-              <h6 className="mb-7 text-center">Your cart is empty 😞</h6>
-        
-              
-              <a className="btn w-100 btn-outline-dark" href="#!">
-                Continue Shopping
-              </a>
-        
-            </div>
-        
-          </div>
+       
         
         </div> 
     </>

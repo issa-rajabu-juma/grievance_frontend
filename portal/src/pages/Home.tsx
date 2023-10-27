@@ -5,9 +5,20 @@ import Breadcrumb from '../components/Breadcrumb'
 import Meta from '../components/Meta'
 import { useState } from 'react'
 import CreateGrievanceForm from '../features/grievance/components/CreateGrievanceForm'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { RootState, store } from '../app/store'
+import { connect } from 'react-redux'
 
 
 const Home = () => {
+
+
+  // get global state
+  const state = store.getState()
+
+  if (!state.user.isAuthenticated) {
+    return <Navigate to='/login' />
+  }
    
   return (
     <>
@@ -65,5 +76,8 @@ const Home = () => {
     </>
   )
 }
+
+
+
 
 export default Home

@@ -1,7 +1,67 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../app/hooks'
+import { logout } from '../features/user/userSlice'
+import { store } from '../app/store'
 
 const NavBarLast = () => {
+
+   // get global state
+  const state = store.getState()
+  
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+   const loggout = (e: any) => {
+        dispatch(logout())
+        navigate('/login')
+    }
+
+
+  const guestLinks = () => {
+    return (
+      <>
+        <li className="nav-item ms-lg-n4">
+            <a className="nav-link"  style={{color:'#474747'}} href="/register">
+              REGISTER
+            </a>
+          </li>
+
+          <li className="nav-item ms-lg-n4">
+            <Link className="nav-link"  style={{color:'#474747'}} to="/login">
+              LOGIN
+            </Link>
+          </li>
+      </>
+    )
+  }
+
+  const authLinks = () => {
+    return (
+      <>
+          <li className="nav-item ms-lg-n4">
+            <Link className="nav-link"  style={{color:'#474747'}} to="">
+             PROFILE
+            </Link>
+          </li>
+
+          <li className="nav-item ms-lg-n4">
+            <Link className="nav-link"  style={{color:'#474747'}} to="/logout">
+              LOGOUT
+            </Link>
+          </li>
+      </>
+    )
+  }
+
+  let links
+  if (state.user.isAuthenticated) {
+     links = authLinks()
+  }else{
+    links = guestLinks()
+  }
+
+
   return (
     <>
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -40,27 +100,20 @@ const NavBarLast = () => {
           
           <ul className="navbar-nav flex-row">
             <li className="nav-item">
-              <a className="nav-link" data-bs-toggle="offcanvas" href="#modalSearch">
-                <i className="fe fe-search"></i>
+              <a className="nav-link" style={{color:'#474747'}} data-bs-toggle="offcanvas" href="#modalSearch">
+                <i className="fa fa-search"></i>
               </a>
             </li>
-            <li className="nav-item ms-lg-n4">
-              <a className="nav-link" href="account-orders.html">
-                <i className="fe fe-user"></i>
-              </a>
-            </li>
-            <li className="nav-item ms-lg-n4">
-              <a className="nav-link" href="account-wishlist.html">
-                <i className="fe fe-heart"></i>
-              </a>
-            </li>
-            <li className="nav-item ms-lg-n4">
-              <a className="nav-link" data-bs-toggle="offcanvas" href="#modalShoppingCart">
-                <span data-cart-items="2">
-                  <i className="fe fe-shopping-cart"></i>
-                </span>
-              </a>
-            </li>
+
+            {links}
+
+           
+
+            
+            
+            
+           
+            
           </ul>
     
         </div>

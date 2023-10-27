@@ -1,151 +1,85 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { nanoid } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const base_url = 'http://127.0.0.1:8000/grievance'
+
+
 
 
 // INTERFACES
 interface Grievance {
     grievance_id: string
-    date: string
+    ref: String
+    start_date: string
+    end_date: String
     title: string
     description: string
-    nature: string
-    severity: string
-    client: string
-    who: string
     what: string
     where: string
+    who: string
     result: string
     comment: string
+    nature: string
+    severity: string
     channel: string
+    operational_status: String
     language: string
-    attachment: string
+    assignment_date: String
+    time_spent: String
+    last_pending_date: String
+    pending_reason: String
+    resolution_date: String
+    conclusion: String
+    satisfaction_level: String
+    satisfaction_comment: String
+    pending_started: String
+    pending_last_start: String
+    pending_stopped: String
+    pending_time_spent: String
+    client: string
+    workforce: String
+    team: String
+    agent: String
     griever: string
-    grievance_status: string
-    created_date: string
-    updated_date:string
+    parent: String
+    child: String
     created_by: string
     updated_by: string
+    created_date: string
+    updated_date:string
+    attachments: string
     
 }
 
 export interface GrievanceState{
     grievances: Grievance[]
-    status: 'idle' | 'loading' | 'failed'
+    status: any,
+    errors: any
 }
 
 // INITIAL STATE
 const initialState: GrievanceState = {
-    grievances: [
-                    {
-                        "grievance_id": '1',
-                        "date": "12/03/2023",
-                        "title": "Maoni yangu yametupiliwa mbali",
-                        "description": "tokea mwaka juzi sijapaata feedback please comply",
-                        "nature": "complaint",
-                        "severity": "5",
-                        "client": "1",
-                        "who": "2023-09-28 00:57:52.322984",
-                        "what": "12/03/2023",
-                        "where": "1",
-                        "result": "1",
-                        "comment": "1",
-                        "channel": "portal",
-                        "language": "swaheng",
-                        "attachment": "a.png",
-                        "griever": "1",
-                        "grievance_status": "1",
-                        'created_date': '',
-                        'updated_date': '',
-                        'created_by': '',
-                        'updated_by': ''
-
-                        
-                    },
-
-                    {
-                        "grievance_id": '2',
-                        "date": "12/03/2023",
-                        "title": "Uchafuzi wa mazingira",
-                        "description": "Hali mbaya ya dunia huku mwongozo",
-                        "nature": "complaint",
-                        "severity": "5",
-                        "client": "2",
-                        "who": "2023-09-28 00:57:52.322984",
-                        "what": "12/03/2023",
-                        "where": "1",
-                        "result": "1",
-                        "comment": "1",
-                        "channel": "portal",
-                        "language": "swaheng",
-                        "attachment": "b.png",
-                        "griever": "1",
-                        "grievance_status": "1",
-                        'created_date': '',
-                        'updated_date': '',
-                        'created_by': '',
-                        'updated_by': ''
-
-                    },
-
-                    {
-                        "grievance_id": '3',
-                        "date": "12/03/2023",
-                        "title": "Maji kujaa majumbani",
-                        "description": "Maji hayo yanaletwa na kiwanda kimoja hivi sikitaji",
-                        "nature": "complaint",
-                        "severity": "5",
-                        "client": "3",
-                        "who": "2023-09-28 00:57:52.322984",
-                        "what": "12/03/2023",
-                        "where": "1",
-                        "result": "1",
-                        "comment": "1",
-                        "channel": "portal",
-                        "language": "swaheng",
-                        "attachment": "c.png",
-                        "griever": "1",
-                        "grievance_status": "1",
-                        'created_date': '',
-                        'updated_date': '',
-                        'created_by': '',
-                        'updated_by': ''
-
-                        
-                    },
-                    {
-                        "grievance_id": '4',
-                        "date": "12/03/2023",
-                        "title": "Umeme",
-                        "description": "imekuwa tatizo kubwa sana",
-                        "nature": "complaint",
-                        "severity": "5",
-                        "client": "3",
-                        "who": "2023-09-28 00:57:52.322984",
-                        "what": "12/03/2023",
-                        "where": "1",
-                        "result": "1",
-                        "comment": "1",
-                        "channel": "portal",
-                        "language": "swaheng",
-                        "attachment": "d.png",
-                        "griever": "1",
-                        "grievance_status": "1",
-                        'created_date': '',
-                        'updated_date': '',
-                        'created_by': '',
-                        'updated_by': ''
-                      
-                    }
-                ],
-    status: "idle"
+    grievances: [],
+    status: "idle",
+    errors: null
 }
 
 // LOGICS
 
+// LOGICS
+export const fetchGrievances = createAsyncThunk('grievance/fetchGrievances', async () => {
+    const response = await axios.get(base_url)
+    return response.data
+})
 
+export const newGrievance = createAsyncThunk('grievance/newGrievance', async (grievance: any) => {
+    const response = await axios.post(base_url, grievance)
+    return response.data
+})
 
-
+ 
 // SLICE
 export const grievanceSlice = createSlice({
     name: "Grievance",
@@ -154,81 +88,74 @@ export const grievanceSlice = createSlice({
         createGrievance: {
             reducer: (state, action: PayloadAction<Grievance>) => {
                 console.log(action.payload)
-                let data = action.payload
-           
-                let grievance = {
-                    'grievance_id': nanoid(),
-                    'date': data.date,
-                    'title': data.title,
-                    'description': data.description,
-                    'nature': data.nature,
-                    'severity': data.severity,
-                    'client': data.client,
-                    'who': data.who,
-                    'what': data.what,
-                    'where': data.where,
-                    'result': data.result,
-                    'comment': data.comment,
-                    'channel': data.channel,
-                    'language': data.language,
-                    'attachment': data.attachment,
-                    'griever': data.griever,
-                    'grievance_status': data.grievance_status,
-                    'created_date': '',
-                    'updated_date': '',
-                    'created_by': '',
-                    'updated_by': ''
-
-                }
-                state.grievances.push(grievance)
-
                 
-                // define tracker payload
-                let tracker = {
-                    'tracker_id': nanoid(),
-                    'griever': grievance.griever,
-                    'grievance': grievance.grievance_id,
-                    'client': data.client,
-                    'start_date': Date.now(),
-                }
-
-                console.log(grievance)
-                console.log()
-                console.log(tracker)
-
-
             }, 
-            prepare: ( date, title, description, nature, severity, client, who, what, where, result, comment, channel, language, attachment, griever, grievance_status, created_date, updated_date, created_by, updated_by) =>{
+            prepare: ( start_date, end_date, title, description, what, where, who, result, comment, nature, severity, channel, operational_status, language, assignment_date, time_spent, last_pending_date, pending_reason, resolution_date, conclusion, satisfaction_level, satisfaction_comment, pending_started, pending_last_start, pending_stopped, pending_time_spent, client, workforce, team, agent, griever, parent, child, created_by, updated_by, created_date, updated_date, attachments) =>{
                 return {
                     payload: {
                         grievance_id: nanoid(),
-                        date,
+                        ref: nanoid(),
+                        start_date,
+                        end_date,
                         title,
                         description,
-                        nature,
-                        severity,
-                        client,
-                        who,
                         what,
                         where,
+                        who,
                         result,
                         comment,
+                        nature,
+                        severity,
                         channel,
+                        operational_status,
                         language,
-                        attachment,
+                        assignment_date,
+                        time_spent,
+                        last_pending_date,
+                        pending_reason,
+                        resolution_date,
+                        conclusion,
+                        satisfaction_level,
+                        satisfaction_comment,
+                        pending_started,
+                        pending_last_start,
+                        pending_stopped,
+                        pending_time_spent,
+                        client,
+                        workforce,
+                        team,
+                        agent,
                         griever,
-                        grievance_status,
+                        parent,
+                        child,
+                        created_by,
+                        updated_by,
                         created_date,
                         updated_date,
-                        created_by,
-                        updated_by
+                        attachments
                     }
                 }
             }
         }
     },
     extraReducers: (builder) => {
-
+        builder
+        .addCase(fetchGrievances.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(fetchGrievances.fulfilled, (state, action) => {
+            console.log(action.payload)
+            state.grievances.push(action.payload)
+            state.status = 'succeeded'
+        })
+        .addCase(fetchGrievances.rejected, (state, action) => {
+            state.status = 'failed'
+            state.errors = action.error
+        })
+        .addCase(newGrievance.fulfilled, (state, action) => {
+           console.log(action.payload)
+           state.grievances.push(action.payload)
+        })
     }
 })
 
@@ -239,7 +166,9 @@ export const grievanceSlice = createSlice({
 export const { createGrievance } = grievanceSlice.actions
 
 // selectors
-export const selectAllGrievances = (state: RootState) => state.grievances
+export const selectAllGrievances = (state: RootState) => state.grievances.grievances
+export const selectGrievanceStatus = (state: RootState) => state.grievances.status
+export const selectGrievanceError = (state: RootState) => state.grievances.errors
 
 
 // reducers
