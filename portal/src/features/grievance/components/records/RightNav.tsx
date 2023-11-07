@@ -23,7 +23,8 @@ const RightNav = (props: any) => {
   return (
     <nav className="mb-10 mb-md-0">
         <div className="list-group list-group-sm list-group-strong list-group-flush-x">
-            <Link className={classNames("list-group-item", "list-group-item-action", "dropend-toggle", props['title'] === 'Create New' && 'active')} to='/new'>Create New</Link>
+           
+            <Link className={classNames("list-group-item", "list-group-item-action", "dropend-toggle", props['title'] === 'Create New' && 'active')} to='/new'>Grieve</Link>
             <Link className={classNames("list-group-item", "list-group-item-action", "dropend-toggle", props['title'] === 'Open' && 'active')} to='/open'>All Open</Link>
             <Link className={classNames("list-group-item", "list-group-item-action", "dropend-toggle", props['title'] === 'Ongoing' && 'active')} to='/ongoing'> Ongoing Grievances</Link>
             <Link className={classNames("list-group-item", "list-group-item-action", "dropend-toggle", props['title'] === 'Closure' && 'active')} to='/closure'> Closed Grievances</Link>

@@ -5,46 +5,54 @@ import { createGrievance } from '../../grievance/grievanceSlice'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectAllClients } from '../../client/clientSlice'
 import { selectAllGrievers } from '../../griever/grieverSlice'
-import { login, checkAuthenticated, loadUser } from '../userSlice'
+import { login, checkAuthenticated, loadUser, registerUser } from '../userSlice'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { RootState } from '../../../app/store'
 
 
+const clients = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
+const natures = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
+const severities = [{'id': 1, 'name':"Low"}, {'id': 2, 'name':"Medium"}, {'id': 3, 'name':"High"}]
+
+// interface Props {
+//     login: any,
+//     authenticated: any
+// }
 
 const LoginForm = (props: any) => {
     // define local state
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [re_password, setRePassword] = useState('')
     
     // declare hooks
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
     // selectors
-
-
     const canSave = Boolean(email) && Boolean(password)
     
-
     // handle on change functions
+    const onUsernameChange = (e: any) => setUsername(e.target.value)
     const onEmailChange = (e: any) => setEmail(e.target.value)
     const onPasswordChange = (e: any) => setPassword(e.target.value)
-    
+    const onRePasswordChange = (e: any) => setRePassword(e.target.value)
 
     // submit form
-    const onLogin = async (e: any) => {
+    const onRegister = (e: any) => {
         e.preventDefault()
-        if (email && password){
+        if (username && email && password && re_password ){
+
+            dispatch(registerUser({username, email, password, re_password}))
             
-            await dispatch(login({email, password}))
-            .then(() => dispatch(loadUser()))
-            .then(() => dispatch(checkAuthenticated()))
-            .then(() => {
-                setEmail('')
-                setPassword('')
-                return <Navigate to='/home' />
-            })
+            setUsername('')
+            setEmail('')
+            setPassword('')
+            setRePassword('')
+            navigate('/confirmation')
+        
         }
 
     }
@@ -62,6 +70,12 @@ const LoginForm = (props: any) => {
                     <div className="col-12 col-md-12">
                         <div className="form-group">
                             
+                            <input className="form-control form-control-sm" id="username" type="username" placeholder="username" name='username' value={username} onChange={onUsernameChange} required />
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-12">
+                        <div className="form-group">
+                            
                             <input className="form-control form-control-sm" id="email" type="email" placeholder="email" name='email' value={email} onChange={onEmailChange} required />
                         </div>
                     </div>
@@ -72,8 +86,14 @@ const LoginForm = (props: any) => {
                             <input className="form-control form-control-sm" id="password" type="password" placeholder="Password" name='password' value={password} onChange={onPasswordChange} required />
                         </div>
                     </div>
+                    <div className="col-12 col-md-12">
+                        <div className="form-group">
+                           
+                            <input className="form-control form-control-sm" id="re_password" type="password" placeholder="Repeat Password" name='re_password' value={re_password} onChange={onRePasswordChange} required />
+                        </div>
+                    </div>
                     <div className="col-12 text-center">
-                        <button className="btn btn-link" onClick={onLogin}>Login</button>
+                        <button className="btn btn-link" onClick={onRegister}>Register</button>
                     </div>
                 </div>
             </form>

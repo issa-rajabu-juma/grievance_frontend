@@ -12,7 +12,7 @@ import { Navigate } from 'react-router-dom'
 const OpenRecord = () => {
     const state = store.getState()
 
-  if (!state.user.isAuthenticated) {
+  if (!state.auth.isAuthenticated) {
     return <Navigate to='/login' />
   }
   

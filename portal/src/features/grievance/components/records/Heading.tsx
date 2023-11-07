@@ -5,10 +5,11 @@ const Heading = (props: any) => {
     <div className="row">
             <div className="col-12 text-center">
 
-              <h3 className="mb-10">{props.heading}</h3>
+              <h3 className="mb-6">{props.heading}</h3>
 
             </div>
           </div>
+          // 251677281314
   )
 }
 
