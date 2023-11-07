@@ -3,7 +3,7 @@ import { RootState } from "../../app/store";
 import { nanoid } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const base_url = 'http://127.0.0.1:8000/grievance'
+const base_url = 'http://127.0.0.1:8000/grievance/'
 
 
 

@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import Footer from './Footer'
 import { connect } from 'react-redux'
 import {checkAuthenticated, loadUser} from '../features/user/userSlice' 
+import {fetchClients} from '../features/client/clientSlice'
 
 const Layout = (props:any) => {
   
@@ -11,6 +12,8 @@ const Layout = (props:any) => {
     if (localStorage.getItem('access')) {
       props.checkAuthenticated()
       props.loadUser()
+      // props.fetchClients()
+
     }
     
   }, [])

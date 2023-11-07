@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { useDispatch } from 'react-redux'
-import { nanoid } from '@reduxjs/toolkit'
+// import { nanoid } from '@reduxjs/toolkit'
+import { nanoid, customAlphabet } from 'nanoid'
 import { newGrievance } from '../grievanceSlice'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectAllClients } from '../../client/clientSlice'
+import { fetchClients, selectAllClients } from '../../client/clientSlice'
 import { selectAllGrievers } from '../../griever/grieverSlice'
 import { useNavigate } from 'react-router-dom'
+import { fetchNatures, selectAllNatures } from '../../nature/natureSlice'
+import { fetchSeverities, selectAllSeverities } from '../../severity/severitySlice'
 
 const clients = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
 const natures = [{'id': 1, 'name':"Complaint"}, {'id': 2, 'name':"Refund"}, {'id': 3, 'name':"Theft"}]
@@ -13,6 +16,16 @@ const severities = [{'id': 1, 'name':"Low"}, {'id': 2, 'name':"Medium"}, {'id': 
 
 
 const CreateGrievanceForm = () => {
+     // declare hooks
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+    
+    useEffect(() =>{
+        dispatch(fetchClients())
+        dispatch(fetchNatures())
+        dispatch(fetchSeverities())
+    }, [])
+
     // define local state
     const [client, setClient] = useState('')
     const [nature, setNature] = useState('')
@@ -37,38 +50,41 @@ const CreateGrievanceForm = () => {
     const [updated_by, setUpdatedBy] = useState('')
     const [newGrievanceStatus, setNewGrievanceStatus] = useState('idle')
 
-
-    
-    // declare dispatch
-    const dispatch = useAppDispatch()
-
-    const navigate = useNavigate()
-    
+   
     // selectors
-    const clientss = useAppSelector(selectAllClients)
+    const clients = useAppSelector(selectAllClients)
+    const natures = useAppSelector(selectAllNatures)
+    const severities = useAppSelector(selectAllSeverities)
     const grieverr = useAppSelector(selectAllGrievers)
 
-    console.log(clientss)
-
     // set choices
-    const clientOptions = (
-         Object.keys(clientss.clients).map((clientee:any) => (
-            <option value={clientss.clients[clientee].client_id} key={clientss.clients[clientee].client_id}>{clientss.clients[clientee].name}</option>
+    // clients
+    let cls = Array(clients.clients)
+ 
+    const clientOptions = (cls.map((clients: any) => (
+        Object.values(clients).map((client:any) => (
+            <option value={client.client_id} key={client.client_id}>{client.name}</option>
         ))
-    )
+    )))
 
-    const natureOptions = (
-        natures.map((nature:any) => (
-            <option value={nature.id} key={nature.id}>{nature.name}</option>
+    // natures
+    let nts = Array(natures.natures)
+ 
+    const natureOptions = (nts.map((natures: any) => (
+        Object.values(natures).map((nature:any) => (
+            <option value={nature.nature_id} key={nature.nature_id}>{nature.name}</option>
         ))
-    )
+    )))
 
-    const severityOptions = (
-        severities.map((severity:any) => (
-            <option value={severity.id} key={severity.id}>{severity.name}</option>
+      // natures
+    let svt = Array(severities.severities)
+ 
+    const severityOptions = (svt.map((severities: any) => (
+        Object.values(severities).map((severity:any) => (
+            <option value={severity.severity_id} key={severity.severity_id}>{severity.name}</option>
         ))
-    )
-
+    )))
+  
     const canSave = [title, description, client].every(Boolean) && newGrievanceStatus === 'idle'
     
 
@@ -86,6 +102,7 @@ const CreateGrievanceForm = () => {
     const onAttachmentChange = (e: any) => setAttachment(e.target.value)
     const onAnonymousChange = (e: any) => setAnonymous(e.target.value)
 
+    const nanoid = customAlphabet('1234567890', 4)
     // submit form
     const onCreateGrievance = () => {
         if (canSave){
@@ -104,15 +121,11 @@ const CreateGrievanceForm = () => {
                 severity,
                 nature,
                 anonymous,
-                griever, 
-                channel, 
-                language, 
-                attachment,
-                created_by,
-                updated_by,
-                created_date,
-                updated_date
-
+                ref: 'GRM-' + nanoid(),
+                language: 'English',
+                operational_status: 'New',
+                channel: 'Portal',
+                start_date: new Date()
             })).unwrap()
 
             setClient('')
@@ -128,8 +141,6 @@ const CreateGrievanceForm = () => {
             setAttachment('')
             setDate('')
             setGriever('')
-            setChannel('')
-            setLanguage('')
             setGrievanceStatus('')
             setUpdatedDate('')
             setCreatedBy('')
@@ -187,7 +198,7 @@ const CreateGrievanceForm = () => {
                                 Client Name *
                             </label>
                             <select className="form-select form-select-sm" id="clientName" name='client' onChange={onClientChange}>
-                                <option value={''}>Choose a client...</option>
+                                <option value={''} key='0'>Choose a client...</option>
                                 {clientOptions}
                             </select>
                         </div>
@@ -199,7 +210,7 @@ const CreateGrievanceForm = () => {
                                 Nature *
                             </label>
                             <select className="form-select form-select-sm" name='nature' id="nature" onChange={onNatureChange}>
-                                <option value={''}>Choose nature of your grievance...</option>
+                                <option value={''}>Nature Choices</option>
                                 {natureOptions}
                             </select>
                         </div>
@@ -211,7 +222,7 @@ const CreateGrievanceForm = () => {
                             Severity *
                         </label>
                         <select className="form-select form-select-sm" id="severity" name='severity' onChange={onSeverityChange}>
-                            <option>Choose severity level...</option>
+                            <option  value={''}>Severity Choices</option>
                             {severityOptions}
                         </select>
                         </div>

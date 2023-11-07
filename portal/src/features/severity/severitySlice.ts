@@ -5,18 +5,17 @@ import axios from "axios";
 
 
 
-const base_url = 'http://127.0.0.1:8000/client/'
+const base_url = 'http://127.0.0.1:8000/severity/'
 
 // INITIAL STATE
 const initialState = {
-    clients: {},
+    severities: {},
     status: 'idle',
     errors: {}
 }
 
-
 // LOGICS
-export const fetchClients = createAsyncThunk('client/fetchClients', async () => {
+export const fetchSeverities = createAsyncThunk('severity/fetchSeverities', async () => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -30,7 +29,7 @@ export const fetchClients = createAsyncThunk('client/fetchClients', async () => 
 })
 
 // SLICE
-export const clientSlice = createSlice({
+export const severitySlice = createSlice({
     name: 'client',
     initialState,
     reducers: {
@@ -38,15 +37,15 @@ export const clientSlice = createSlice({
     },
     extraReducers: (builder) => {
     builder
-        .addCase(fetchClients.pending, (state, action) => {
+        .addCase(fetchSeverities.pending, (state, action) => {
             state.status = 'loading'
         })
-        .addCase(fetchClients.fulfilled, (state, action) => {
-            state.clients = action.payload
-            state.status = 'client fetching succeeded'
+        .addCase(fetchSeverities.fulfilled, (state, action) => {
+            state.severities = action.payload
+            state.status = 'severities fetching succeeded'
         })
-        .addCase(fetchClients.rejected, (state, action) => {
-            state.status = 'failed to fetch'
+        .addCase(fetchSeverities.rejected, (state, action) => {
+            state.status = 'failed to fetch severities'
             state.errors = action.error
         })
     }
@@ -56,7 +55,7 @@ export const clientSlice = createSlice({
 // actions
 
 // selectors
-export const selectAllClients = (state: RootState) => state.clients
+export const selectAllSeverities = (state: RootState) => state.severities
 
 // reducers
-export default clientSlice.reducer
+export default severitySlice.reducer

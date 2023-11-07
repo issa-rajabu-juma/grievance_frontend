@@ -3,20 +3,17 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import axios from "axios";
 
-
-
-const base_url = 'http://127.0.0.1:8000/client/'
+const base_url = 'http://127.0.0.1:8000/nature/'
 
 // INITIAL STATE
 const initialState = {
-    clients: {},
+    natures: {},
     status: 'idle',
     errors: {}
 }
 
-
 // LOGICS
-export const fetchClients = createAsyncThunk('client/fetchClients', async () => {
+export const fetchNatures = createAsyncThunk('nature/fetchNatures', async () => {
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -30,22 +27,22 @@ export const fetchClients = createAsyncThunk('client/fetchClients', async () => 
 })
 
 // SLICE
-export const clientSlice = createSlice({
-    name: 'client',
+export const natureSlice = createSlice({
+    name: 'nature',
     initialState,
     reducers: {
 
     },
     extraReducers: (builder) => {
     builder
-        .addCase(fetchClients.pending, (state, action) => {
+        .addCase(fetchNatures.pending, (state, action) => {
             state.status = 'loading'
         })
-        .addCase(fetchClients.fulfilled, (state, action) => {
-            state.clients = action.payload
+        .addCase(fetchNatures.fulfilled, (state, action) => {
+            state.natures = action.payload
             state.status = 'client fetching succeeded'
         })
-        .addCase(fetchClients.rejected, (state, action) => {
+        .addCase(fetchNatures.rejected, (state, action) => {
             state.status = 'failed to fetch'
             state.errors = action.error
         })
@@ -56,7 +53,7 @@ export const clientSlice = createSlice({
 // actions
 
 // selectors
-export const selectAllClients = (state: RootState) => state.clients
+export const selectAllNatures = (state: RootState) => state.natures
 
 // reducers
-export default clientSlice.reducer
+export default natureSlice.reducer
