@@ -245,3 +245,36 @@
                 }
             }
         }
+
+        
+// INTERFACES
+// export interface Client {
+//     client_id: string
+//     name: string
+//     type: string
+//     phone: string
+//     address: string
+//     region: string
+//     country: string
+//     created_date: string
+//     updated_date: string
+//     created_by: string
+//     updated_by: string
+// }
+
+// export interface ClientState {
+//     clients: Client[],
+//     status: 'idle' | 'loading' | 'failed'
+// }
+
+  // const severityOptions = (
+    //     natures.map((nature:any) => (
+    //         <option value={nature.id} key={nature.id}>{nature.name}</option>
+    //     ))
+    // )
+
+    // const severityOptions = (
+    //     severities.map((severity:any) => (
+    //         <option value={severity.id} key={severity.id}>{severity.name}</option>
+    //     ))
+    // )
