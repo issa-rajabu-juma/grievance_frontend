@@ -13,7 +13,7 @@ const OngoingRecord = () => {
 
   const state = store.getState()
 
-  if (!state.user.isAuthenticated) {
+  if (!state.auth.isAuthenticated) {
     return <Navigate to='/login' />
   }
 
@@ -24,12 +24,12 @@ const OngoingRecord = () => {
         <Breadcrumb title='Ongoing'/>
        <section className="pt-7 pb-12">
           <div className="container">
-            <Heading heading='Ongoing Grievances'  />
-            <div className="row">
+            {/* <Heading heading='Ongoing Grievances'  /> */}
+            <div className="row" style={{marginTop:60 + 'px'}}>
               <div className="col-12 col-md-3">
                 <RightNav  title='Ongoing'/>
               </div>
-              <div className="col-12 col-md-9 col-lg-8 offset-lg-1">
+              <div className="col-12 col-md-9 col-lg-8 offset-lg-1" style={{maxHeight: 'auto', marginTop: -2.7 + '%'}}>
                   <Ongoing />
               </div>
             </div>

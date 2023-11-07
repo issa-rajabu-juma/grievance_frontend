@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBarTop from '../components/NavBarTop'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
@@ -6,17 +6,22 @@ import Meta from '../components/Meta'
 import { useState } from 'react'
 import CreateGrievanceForm from '../features/grievance/components/CreateGrievanceForm'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { RootState, store } from '../app/store'
-import { connect } from 'react-redux'
+import { store } from '../app/store'
 
 
-const Home = () => {
 
+const Home = (props: any) => {
+
+  //  useEffect( () => {
+  //    if(performance.navigation.type == 2){
+  //       location.reload();
+  //     }
+  // }, [])
 
   // get global state
   const state = store.getState()
 
-  if (!state.user.isAuthenticated) {
+  if (!state.auth.isAuthenticated) {
     return <Navigate to='/login' />
   }
    

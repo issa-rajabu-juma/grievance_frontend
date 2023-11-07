@@ -15,7 +15,7 @@ import { store } from '../app/store'
 const NewRecord = () => {
   const state = store.getState()
 
-  if (!state.user.isAuthenticated) {
+  if (!state.auth.isAuthenticated) {
     return <Navigate to='/login' />
   }
   return (
@@ -23,15 +23,40 @@ const NewRecord = () => {
         <Meta title='Create New'/>
         <NavBarLast />
         <Breadcrumb title='Create New'/>
-       <section className="pt-7 pb-12">
+       <section className="">
         <div className="container">
-          <Heading  heading='Create New Grievance' />
-          <div className="row">
+          <Heading heading='Grieving' />
+          <div className="row" style={{marginTop:60 + 'px'}}>
             <div className="col-12 col-md-3">
               <RightNav title='Create New'/>
             </div>
-            <div className="col-12 col-md-9 col-lg-8 offset-lg-1" data-simplebar style={{maxHeight: 729 + "px"}}>
-                <New />
+            <div className="col-12 col-md-9 col-lg-8 offset-lg-1" data-simplebar style={{maxHeight: 'auto', marginTop: 0 + '%'}}>
+                
+                <section>
+                  {/* <div className="container">
+                    <div className="row">
+                      <div className="col-12"> */}
+
+                        <div className="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom">
+                          
+                        </div>
+
+                        <div className="tab-content">
+                          <div className="tab-pane fade active show" id="descriptionTab">
+                            <div className="row justify-content-center py-6">
+                              <div className="col-12 col-lg-10 col-xl-10">
+                                <New />
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
+
+                      {/* </div>
+                    </div>
+                  </div> */}
+                </section>
+            
             </div>
           </div>
         </div>

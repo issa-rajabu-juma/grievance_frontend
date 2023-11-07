@@ -15,6 +15,9 @@ import Register from "./pages/Register"
 import { useAppDispatch } from "./app/hooks"
 import { loadUser } from "./features/user/userSlice"
 import Logout from "./pages/Logout"
+import Confirmation from "./pages/Confirmation"
+import Profile from "./pages/Profile"
+import EditProfile from "./pages/EditProfile"
 
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
             <Route path="logout" element={<Logout />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="confirmation" element={<Confirmation />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="edit-profile" element={<EditProfile />} />
           </Route>  
         </Routes> 
       </BrowserRouter>

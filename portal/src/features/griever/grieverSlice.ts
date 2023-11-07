@@ -1,91 +1,80 @@
 // IMPORTS
-import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
+import axios from 'axios'
 
+// // INTERFACES
+// interface Griever {
+//     fname: string
+//     lname: String
+//     mname: string
+//     gender: String
+//     age: string
+//     mobile_no: string
+//     street: string
+//     ward: string
+//     district: string
+//     region: string
+//     marital_status: string
+//     spouse: string
+//     kin: string
+    
+    
+    
+// }
 
-// INTEFACE
-interface Griever{
-    griever_id: string
-    f_name: string
-    m_name: string
-    l_name: string
-    gender: string
-    age: string
-    mobile_no: string
-    street: string
-    ward: string
-    district: string
-    region: string
-    anonymous: string
-    marital_status: string
-    spouse: string
-    next_kin: string
-    created_date: string
-    updated_date: string
-    created_by: string
-    updated_by: string
-}
-
-export interface GrieverState {
-    grievers: Griever[],
-    status: any,
-    errors: any
-
-}
+// export interface GrieverState{
+//     griever: Griever[],
+//     status: any,
+//     errors: any
+// }
 
 // INITIAL STATE
-const initialState: GrieverState = {
-    grievers: [],
+const initialState = {
+    griever: {},
     status: 'idle',
-    errors: null
+    errors: '',
 }
 
 // LOGICS
+export const newGriever:any = createAsyncThunk('griever/newGriever', async (data:any) => {
+    console.log(data)
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+    const response = await axios.post('http://localhost:8000/griever/', data, config)
+    return response.data
+})
 
 
 // SLICE
 export const grieverSlice = createSlice({
-    name: 'Griever',
+    name: 'griever',
     initialState,
-    reducers: {
-        registerGriever: {
-            reducer: (state, action: PayloadAction<Griever>) => {
-                console.log(action.payload)
-            },
-            prepare: (f_name, m_name, l_name, gender, age,  mobile_no, street, ward, district, region, anonymous, marital_status, spouse, next_kin, created_date, updated_date, created_by, updated_by) => {
-                return {
-                    payload: {
-                        griever_id: nanoid(),
-                        f_name,
-                        m_name,
-                        l_name,
-                        gender,
-                        age,
-                        mobile_no,
-                        street,
-                        ward,
-                        district,
-                        region,
-                        anonymous,
-                        marital_status,
-                        spouse,
-                        next_kin,
-                        created_date,
-                        updated_date,
-                        created_by,
-                        updated_by
-}
-                    }
-                }
-            }
-        }
-    ,
-    extraReducers: (builder) =>{}
+    reducers: {},
+    extraReducers: (builder) =>{
+        builder
+        .addCase(newGriever.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(newGriever.fulfilled, (state, action) => {
+            state.status = 'griever added'
+            state.griever = action.payload
+        })
+        .addCase(newGriever.rejected, (state, action) => {
+            state.status = 'failed'
+            state.errors = 'error'
+        })
+    }
 })
 
 // EXPORTS
 // actions
-export const { registerGriever } = grieverSlice.actions
+// export const { registerGriever } = grieverSlice.actions
 
 // selectors
 export const selectAllGrievers = (state: RootState) => state.grievers

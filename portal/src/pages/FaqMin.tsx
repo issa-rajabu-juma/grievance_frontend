@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBarTop from '../components/NavBarTop'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
@@ -15,9 +15,12 @@ import { store } from '../app/store'
 
 
 const FaqMin = () => {
-    const state = store.getState()
 
-  if (!state.user.isAuthenticated) {
+
+  
+  const state = store.getState()
+
+  if (!state.auth.isAuthenticated) {
     return <Navigate to='/login' />
   }
   

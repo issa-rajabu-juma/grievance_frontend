@@ -6,14 +6,20 @@ import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
 import Closed from '../features/grievance/components/records/pages/Closure'
 import { store } from '../app/store'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate, useNavigation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 
 const ClosedRecord = () => {
-  const state = store.getState()
+  const store_state = store.getState()
+  const location = useLocation()
+  const navigate = useNavigate()
+  
+console.log(location)
+  if (!store_state.auth.isAuthenticated) {
 
-  if (!state.user.isAuthenticated) {
-    return <Navigate to='/login' />
+    navigate('/login', {state: {loc:location.pathname}})
+    console.log(location)
   }
   
   return (

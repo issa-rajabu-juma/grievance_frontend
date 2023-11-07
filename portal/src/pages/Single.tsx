@@ -17,7 +17,7 @@ import { store } from '../app/store'
 const Single = () => {
   const state = store.getState()
 
-  if (!state.user.isAuthenticated) {
+  if (!state.auth.isAuthenticated) {
     return <Navigate to='/login' />
   }
    const grievances = useSelector(selectAllGrievances)
@@ -70,7 +70,7 @@ const Single = () => {
                                   <h6 className="heading-xxxs text-muted">Start date</h6>
 
                                   <p className="mb-lg-0 fs-sm fw-bold">
-                                    <time datetime="2019-10-01">
+                                    <time>
                                       01 Oct, 2019
                                     </time>
                                   </p>
@@ -82,7 +82,7 @@ const Single = () => {
 
                                   
                                   <p className="mb-lg-0 fs-sm fw-bold">
-                                    <time datetime="2019-10-01">
+                                    <time>
                                       High
                                     </time>
                                   </p>

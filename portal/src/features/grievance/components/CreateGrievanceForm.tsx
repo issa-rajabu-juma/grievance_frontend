@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 // import { useDispatch } from 'react-redux'
 import { nanoid } from '@reduxjs/toolkit'
-import { createGrievance } from '../grievanceSlice'
 import { newGrievance } from '../grievanceSlice'
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectAllClients } from '../../client/clientSlice'
@@ -30,6 +29,7 @@ const CreateGrievanceForm = () => {
     const [griever, setGriever] = useState('')
     const [channel, setChannel] = useState('')
     const [language, setLanguage] = useState('')
+    const [anonymous, setAnonymous] = useState(0)
     const [grievance_status, setGrievanceStatus] = useState('')
     const [updated_date, setUpdatedDate] = useState('')
     const [created_by, setCreatedBy] = useState('')
@@ -48,6 +48,7 @@ const CreateGrievanceForm = () => {
     const clientss = useAppSelector(selectAllClients)
     const grieverr = useAppSelector(selectAllGrievers)
 
+    console.log(clientss)
 
     // set choices
     const clientOptions = (
@@ -83,14 +84,15 @@ const CreateGrievanceForm = () => {
     const onCommentChange = (e: any) => setComment(e.target.value)
     const onResultChange = (e: any) => setResult(e.target.value)
     const onAttachmentChange = (e: any) => setAttachment(e.target.value)
+    const onAnonymousChange = (e: any) => setAnonymous(e.target.value)
 
     // submit form
     const onCreateGrievance = () => {
         if (canSave){
+            console.log(anonymous)
           try {
             setNewGrievanceStatus('pending')
             dispatch(newGrievance({
-                grievance_id: Math.random(),
                 title,
                 description,
                 client,
@@ -101,6 +103,7 @@ const CreateGrievanceForm = () => {
                 comment,
                 severity,
                 nature,
+                anonymous,
                 griever, 
                 channel, 
                 language, 
@@ -132,7 +135,7 @@ const CreateGrievanceForm = () => {
             setCreatedBy('')
             setCreatedDate('')
             setUpdatedBy('')
-            navigate('/open')
+            // navigate('/open')
 
           } catch (error) {
             console.error('Failed to create new grievance', error)
@@ -151,9 +154,34 @@ const CreateGrievanceForm = () => {
     
     return (
         <>
-            <form style={{paddingTop:0.5 + 'em'}} >
+            <form style={{paddingTop:0 + 'em'}} >
                 <div className="row">
+                    <div className="col-12 col-md-6 ">
+                        <div className="form-group card card-sm border">
+                            <div className="card-body">
+                                <div className="form-check custom-radio">
+                                    <input className="form-check-input collapsed" id="checkoutPaymentCard" name="anonymous" type="radio" defaultChecked value={anonymous} />
+                                    <label className="form-check-label d-flex justify-content-between w-100 fs-sm text-body text-nowrap" htmlFor="checkoutPaymentCard">
+                                        Default Grievance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12 col-md-6">
+                        <div className="form-group card card-sm border">
+                            <div className="card-body">
+                                <div className="form-check custom-radio">
+                                    <input className="form-check-input" id="checkoutPaymentPaypal" name="anonymous" type="radio" defaultValue={1} onChange={onAnonymousChange} />
+                                    <label className="form-check-label d-flex justify-content-between w-100 fs-sm text-body text-nowrap" htmlFor="checkoutPaymentPaypal">
+                                        Anonymous Grievance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div className="col-12 col-md-12">
+
                         <div className="form-group">
                             <label className="form-label" htmlFor="clientName">
                                 Client Name *

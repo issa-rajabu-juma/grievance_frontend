@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../app/hooks'
 
 // INITIAL STATE
 const initialState = {
-    user: null,
+    user: {},
     isAuthenticated: false,
     status: 'idle',
     access: localStorage.getItem('access'),
@@ -14,7 +14,20 @@ const initialState = {
 }
 
 // LOGICS
-export const login = createAsyncThunk('user/login', async (data:any) => {
+export const registerUser = createAsyncThunk('auth/registerUser', async (data:any) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': `Bearer ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+    const response = await axios.post('http://localhost:8000/auth/users/', JSON.stringify(data), config)
+    return response.data
+})
+
+
+export const login = createAsyncThunk('auth/login', async (data:any) => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -24,7 +37,7 @@ export const login = createAsyncThunk('user/login', async (data:any) => {
     return response.data
 })
 
-export const logout = createAsyncThunk('user/logout', async () => {
+export const logout = createAsyncThunk('auth/logout', async () => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -34,7 +47,7 @@ export const logout = createAsyncThunk('user/logout', async () => {
     return response.data
 })
 
-export const checkAuthenticated = createAsyncThunk('user/authenticated', async () => {
+export const checkAuthenticated = createAsyncThunk('auth/authenticated', async () => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -52,7 +65,7 @@ export const checkAuthenticated = createAsyncThunk('user/authenticated', async (
    
 })
 
-export const loadUser = createAsyncThunk('user/loadUser', async () => {
+export const loadUser = createAsyncThunk('auth/loadUser', async () => {
     if (localStorage.getItem('access')) {
          const config = {
             headers: {
@@ -68,7 +81,7 @@ export const loadUser = createAsyncThunk('user/loadUser', async () => {
 
 // SLICE
 export const userSlice = createSlice({
-    name: 'User',
+    name: 'auth',
     initialState,
     reducers: {
 
@@ -78,43 +91,63 @@ export const userSlice = createSlice({
         .addCase(login.pending, (state, action) => {
             state.status = 'login loading'
         })
-        .addCase(loadUser.pending, (state, action) => {
-            state.status = 'user loading '
-        })
-         .addCase(checkAuthenticated.pending, (state, action) => {
-            state.status = 'authenticating'
-        })
+        
         .addCase(login.fulfilled, (state, action) => {
             state.status = 'login success'
             localStorage.setItem('access', action.payload.access)
             state.access = action.payload.access
             state.refresh = action.payload.refresh
         })
+         .addCase(login.rejected, (state, action) => {
+            state.status = 'idle'
+            localStorage.removeItem('access')
+            localStorage.removeItem('refresh')
+            localStorage.removeItem('authenticated')
+            state.access = null
+            state.refresh = null
+            state.isAuthenticated = false
+            state.user = {}
+        })
+        .addCase(loadUser.pending, (state, action) => {
+            state.status = 'user loading '
+        })
+         
         
         .addCase(loadUser.fulfilled, (state, action) => {
             state.status = 'user loaded'
             state.user = action.payload
+            console.log(state.user)
+        })
+        .addCase(loadUser.rejected, (state, action) => {
+            state.status = 'user failed'
+            state.user = {}
+        })
+        .addCase(checkAuthenticated.pending, (state, action) => {
+            state.status = 'authenticating'
         })
         .addCase(checkAuthenticated.fulfilled, (state, action) => {
             state.status = 'authenticated'
             state.isAuthenticated = true
-        })
-        .addCase(login.rejected, (state, action) => {
-            state.status = 'idle'
-            localStorage.removeItem('access')
-            localStorage.removeItem('refresh')
-            state.access = null
-            state.refresh = null
-            state.isAuthenticated = false
-        })
-        .addCase(loadUser.rejected, (state, action) => {
-            state.status = 'user failed'
-            state.user = null
+             localStorage.setItem('authenticated', 'true')
+            // console.log(action.payload)
         })
         .addCase(checkAuthenticated.rejected, (state, action) => {
             state.status = 'not authenticated'
             state.isAuthenticated = false
         })
+        .addCase(registerUser.pending, (state, action) => {
+            state.status = 'User Registration Pending'
+        })
+       .addCase(registerUser.fulfilled, (state, action) => {
+            state.status = 'User Registered Successfully'
+            // state.user = action.payload
+            console.log(action.payload)
+        })
+        .addCase(registerUser.rejected, (state, action) => {
+            state.status = 'User Registration Failed'
+        })
+        
+        
         .addCase(logout.pending, (state, action) => {
             state.status = 'logging out'
             state.isAuthenticated = false
@@ -124,9 +157,11 @@ export const userSlice = createSlice({
             state.status = 'idle'
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
+            localStorage.removeItem('authenticated')
             state.access = null
             state.refresh = null
             state.isAuthenticated = false
+            state.user = {}
         })
         .addCase(logout.rejected, (state, action) => {
             state.status = 'logout failed'
@@ -139,7 +174,7 @@ export const userSlice = createSlice({
 // export const { registerUser, loginUser } = userSlice.actions
 
 // selectors
-export const selectLoggedinUser = (state: RootState) => state.user
+export const selectLoggedinUser = (state: RootState) => state.auth.user
 
 // reducer
 export default userSlice.reducer

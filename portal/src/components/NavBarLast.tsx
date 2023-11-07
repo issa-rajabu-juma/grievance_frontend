@@ -22,9 +22,9 @@ const NavBarLast = () => {
     return (
       <>
         <li className="nav-item ms-lg-n4">
-            <a className="nav-link"  style={{color:'#474747'}} href="/register">
+            <Link className="nav-link"  style={{color:'#474747'}} to="/register">
               REGISTER
-            </a>
+            </Link>
           </li>
 
           <li className="nav-item ms-lg-n4">
@@ -40,7 +40,7 @@ const NavBarLast = () => {
     return (
       <>
           <li className="nav-item ms-lg-n4">
-            <Link className="nav-link"  style={{color:'#474747'}} to="">
+            <Link className="nav-link"  style={{color:'#474747'}} to="/profile">
              PROFILE
             </Link>
           </li>
@@ -55,7 +55,7 @@ const NavBarLast = () => {
   }
 
   let links
-  if (state.user.isAuthenticated) {
+  if (state.auth.isAuthenticated) {
      links = authLinks()
   }else{
     links = guestLinks()
