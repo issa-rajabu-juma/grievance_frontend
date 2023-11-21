@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Meta from '../components/Meta'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Heading from '../features/grievance/components/records/Heading'
 import LoginForm from '../features/user/components/LoginForm'
 import NavBarLast from '../components/NavBarLast'
 import { store } from '../app/store'
 
 const Login = () => {
-  //  const state = store.getState()
-  //  const navigate = useNavigate()
-  const location = useLocation()
-  console.log(location)
-
-  // if (!state.user.isAuthenticated) {
-  //   return navigate(1)
-  // }
+  const navigate = useNavigate()
+  useEffect( () => {
+     if(sessionStorage.getItem('authenticated') === 'true'){
+    var url = sessionStorage.getItem('current_location')
+    if (url !== null) {
+      return navigate(url)
+    }else{
+      return navigate('/home')
+    }
+  }
+  }, [])
+  
+ 
   
   return (
     <>

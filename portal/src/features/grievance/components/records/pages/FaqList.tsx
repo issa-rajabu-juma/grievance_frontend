@@ -9,19 +9,18 @@ const FaqList = () => {
 
   return (
     <>
-      <h5 className="mb-7">Grievances:</h5>
       <ul className="list-group list-group-flush-x mb-9" id="faqCollapseParentOne">
         <li className="list-group-item">
 
           
-          <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne">
+          <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne" aria-expanded='true'>
             1. Bring of had which their whose you're it own?
           </a>
 
           
-          <div className="collapse" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
+          <div className="collapse show" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
             <div className="mt-5">
-              <p className="mb-0 fs-lg text-gray-500">
+              <p className="mb-0 fs-lg text-gray-500"  data-simplebar style={{maxHeight: 160 + "px"}}>
                 Saw wherein fruitful good days image them, midst, waters upon, saw. Seas lights seasons. Fourth
                 hath rule creepeth own lesser years itself so seed fifth for grass.
               </p>
@@ -39,7 +38,7 @@ const FaqList = () => {
           
           <div className="collapse" id="faqCollapseTwo" data-bs-parent="#faqCollapseParentOne">
             <div className="mt-5">
-              <p className="mb-0 fs-lg text-gray-500">
+              <p className="mb-0 fs-lg text-gray-500"  data-simplebar style={{maxHeight: 160 + "px"}}>
                 Saw wherein fruitful good days image them, midst, waters upon, saw. Seas lights seasons. Fourth
                 hath rule creepeth own lesser years itself so seed fifth for grass.
               </p>
@@ -57,7 +56,7 @@ const FaqList = () => {
           
           <div className="collapse" id="faqCollapseThree" data-bs-parent="#faqCollapseParentOne">
             <div className="mt-5">
-              <p className="mb-0 fs-lg text-gray-500">
+              <p className="mb-0 fs-lg text-gray-500"  data-simplebar style={{maxHeight: 160 + "px"}}>
                 Saw wherein fruitful good days image them, midst, waters upon, saw. Seas lights seasons. Fourth
                 hath rule creepeth own lesser years itself so seed fifth for grass.
               </p>
@@ -75,7 +74,7 @@ const FaqList = () => {
           
           <div className="collapse" id="faqCollapseFour" data-bs-parent="#faqCollapseParentOne">
             <div className="mt-5">
-              <p className="mb-0 fs-lg text-gray-500">
+              <p className="mb-0 fs-lg text-gray-500"  data-simplebar style={{maxHeight: 160 + "px"}}>
                 Saw wherein fruitful good days image them, midst, waters upon, saw. Seas lights seasons. Fourth
                 hath rule creepeth own lesser years itself so seed fifth for grass.
               </p>

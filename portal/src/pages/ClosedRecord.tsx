@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
 import Meta from '../components/Meta'
@@ -8,18 +8,35 @@ import Closed from '../features/grievance/components/records/pages/Closure'
 import { store } from '../app/store'
 import { Navigate, useNavigate, useNavigation } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
+import { useAppDispatch } from '../app/hooks'
+import { fetchClients } from '../features/client/clientSlice'
+import { fetchGrievers } from '../features/griever/grieverSlice'
+import { fetchGrievances } from '../features/grievance/grievanceSlice'
+import FollowupTable from '../features/grievance/components/FollowupTable'
 
 
 const ClosedRecord = () => {
-  const store_state = store.getState()
   const location = useLocation()
-  const navigate = useNavigate()
-  
-console.log(location)
-  if (!store_state.auth.isAuthenticated) {
 
-    navigate('/login', {state: {loc:location.pathname}})
-    console.log(location)
+  if (sessionStorage.getItem('authenticated') !== 'true') {
+    sessionStorage.setItem('current_location', location.pathname)
+    return <Navigate to='/login' />
+  }else{
+    sessionStorage.setItem('current_location', location.pathname)
+    const dispatch = useAppDispatch()
+    
+    const dispatchInit = async () => {
+      await Promise.all([
+        dispatch(fetchClients()),
+        dispatch(fetchGrievers()),
+        dispatch(fetchGrievances()),
+      ])
+    }
+
+    useEffect( () => {
+        dispatchInit()
+    }, [])
+
   }
   
   return (
@@ -29,13 +46,47 @@ console.log(location)
         <Breadcrumb title='Closure'/>
        <section className="pt-7 pb-12">
           <div className="container">
-            <Heading heading='Closed Grievances'  />
-            <div className="row">
+            {/* <Heading heading='Closed Grievances'  /> */}
+            <div className="row mt-8">
               <div className="col-12 col-md-3">
                 <RightNav title='Closure'/>
               </div>
               <div className="col-12 col-md-9 col-lg-8 offset-lg-1">
-                  <Closed />
+                    <ul className="list-group list-group-flush-x mb-9" id="faqCollapseParentOne">
+                    <li className="list-group-item">
+
+                      
+                      <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne" aria-expanded="true">
+                        Closed Grievances
+                      </a>
+
+                      
+                      <div className="collapse show" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
+                        <div className="mt-5">
+                         <FollowupTable />
+                        </div>
+                      </div>
+
+                    </li>
+
+                     <li className="list-group-item">
+
+                      
+                      <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne">
+                        Re-opened Grievances
+                      </a>
+
+                      
+                      <div className="collapse" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
+                        <div className="mt-5">
+                         <FollowupTable />
+                        </div>
+                      </div>
+
+                    </li>
+                    
+                   
+                  </ul>
               </div>
             </div>
           </div>

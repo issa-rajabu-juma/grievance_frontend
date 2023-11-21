@@ -47,20 +47,21 @@ export const logout = createAsyncThunk('auth/logout', async () => {
     return response.data
 })
 
-export const checkAuthenticated = createAsyncThunk('auth/authenticated', async () => {
+export const checkAuthenticated = createAsyncThunk('auth/checkAuthenticated', async () => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
     if (localStorage.getItem('access')) {
-        console.log(localStorage.getItem('access'))
         const token = localStorage.getItem('access')
         const response = await axios.post('http://localhost:8000/auth/jwt/verify/', JSON.stringify({token: token}), config)
         
         if (response.data.code !== 'token_not_valid') {
             return response.data
         }
+    }else {
+        return 'failed'
     }
    
 })
@@ -89,82 +90,114 @@ export const userSlice = createSlice({
     extraReducers: (builder) =>{
         builder
         .addCase(login.pending, (state, action) => {
-            state.status = 'login loading'
+            state.status = 'loading'
         })
         
         .addCase(login.fulfilled, (state, action) => {
-            state.status = 'login success'
-            localStorage.setItem('access', action.payload.access)
-            state.access = action.payload.access
-            state.refresh = action.payload.refresh
+            if (action.payload) {
+                state.status = 'success'
+                localStorage.setItem('access', action.payload.access)
+                state.access = action.payload.access
+                state.refresh = action.payload.refresh
+            } else {
+                state.status = 'idle'
+                localStorage.removeItem('access')
+                localStorage.removeItem('refresh')
+                sessionStorage.removeItem('authenticated') 
+                localStorage.removeItem('isAuthenticated')
+                state.access = null
+                state.refresh = null
+                state.isAuthenticated = false
+                state.user = {}
+            }
+           
         })
          .addCase(login.rejected, (state, action) => {
             state.status = 'idle'
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
-            localStorage.removeItem('authenticated')
+            sessionStorage.removeItem('authenticated') 
+            localStorage.removeItem('isAuthenticated')
             state.access = null
             state.refresh = null
             state.isAuthenticated = false
             state.user = {}
         })
         .addCase(loadUser.pending, (state, action) => {
-            state.status = 'user loading '
+            state.status = 'loading '
         })
-         
-        
         .addCase(loadUser.fulfilled, (state, action) => {
-            state.status = 'user loaded'
+            state.status = 'success'
             state.user = action.payload
-            console.log(state.user)
         })
         .addCase(loadUser.rejected, (state, action) => {
-            state.status = 'user failed'
+            state.status = 'idle'
             state.user = {}
         })
         .addCase(checkAuthenticated.pending, (state, action) => {
-            state.status = 'authenticating'
+            state.status = 'loading'
         })
         .addCase(checkAuthenticated.fulfilled, (state, action) => {
-            state.status = 'authenticated'
-            state.isAuthenticated = true
-             localStorage.setItem('authenticated', 'true')
-            // console.log(action.payload)
+            console.log(action.payload)
+            if (action.payload !== 'failed') {
+                state.status = 'success'
+                state.isAuthenticated = true
+                sessionStorage.setItem('authenticated', 'true')
+            } else {
+                state.status = 'idle'
+                state.isAuthenticated = false
+            }
+          
         })
         .addCase(checkAuthenticated.rejected, (state, action) => {
-            state.status = 'not authenticated'
+            state.status = 'idle'
             state.isAuthenticated = false
         })
         .addCase(registerUser.pending, (state, action) => {
-            state.status = 'User Registration Pending'
+            state.status = 'loading'
         })
        .addCase(registerUser.fulfilled, (state, action) => {
-            state.status = 'User Registered Successfully'
-            // state.user = action.payload
-            console.log(action.payload)
+            state.status = 'success'
         })
         .addCase(registerUser.rejected, (state, action) => {
-            state.status = 'User Registration Failed'
+            state.status = 'idle'
         })
         
         
         .addCase(logout.pending, (state, action) => {
-            state.status = 'logging out'
+            state.status = 'loading'
             state.isAuthenticated = false
             
         })
         .addCase(logout.fulfilled, (state, action) => {
+            console.log(action.payload)
             state.status = 'idle'
+
             localStorage.removeItem('access')
             localStorage.removeItem('refresh')
-            localStorage.removeItem('authenticated')
+            sessionStorage.removeItem('authenticated')
+            
             state.access = null
             state.refresh = null
             state.isAuthenticated = false
             state.user = {}
         })
         .addCase(logout.rejected, (state, action) => {
-            state.status = 'logout failed'
+            if (action.payload === undefined) {
+                state.status = 'idle'
+                localStorage.removeItem('access')
+                localStorage.removeItem('refresh')
+                sessionStorage.removeItem('authenticated')
+                
+                state.access = null
+                state.refresh = null
+                state.isAuthenticated = false
+                state.user = {}
+                
+            } else {
+                state.status = 'idle'
+            }
+
         })
     }
 })
