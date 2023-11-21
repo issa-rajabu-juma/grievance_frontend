@@ -6,6 +6,7 @@ import { selectAllGrievances } from '../../../grievanceSlice'
 
 const Ongoing = () => {
   const grievances = useSelector(selectAllGrievances)
+  console.log(grievances)
 
   return (
     <FollowupTable data={grievances} />

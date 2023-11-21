@@ -25,7 +25,7 @@ const NavbarCover = () => {
   }
 
   let links
-    if (localStorage.getItem('authenticated') === 'true') {
+    if (sessionStorage.getItem('authenticated') === 'true') {
       links = authLinks()
     }else{
       links = guestLinks()

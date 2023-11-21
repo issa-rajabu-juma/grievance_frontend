@@ -7,7 +7,7 @@ import { useState } from 'react'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
 import Create from '../features/grievance/components/records/Create'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import New from '../features/grievance/components/records/pages/New'
 import FaqMain from '../features/grievance/components/records/pages/FaqList'
 import FaqList from '../features/grievance/components/records/pages/FaqList'
@@ -17,11 +17,14 @@ import { store } from '../app/store'
 const FaqMin = () => {
 
 
-  
-  const state = store.getState()
+ const location = useLocation()
 
-  if (!state.auth.isAuthenticated) {
+  if (sessionStorage.getItem('authenticated') !== 'true') {
+    sessionStorage.setItem('current_location', location.pathname)
     return <Navigate to='/login' />
+  }else{
+    sessionStorage.setItem('current_location', location.pathname)
+
   }
   
   return (
@@ -32,9 +35,9 @@ const FaqMin = () => {
        <section className="pt-7 pb-12">
         <div className="container">
           
-          <Heading  heading='Frequently Asked Questions'  />
+          {/* <Heading  heading='Frequently Asked Questions'  /> */}
 
-          <div className="row">
+          <div className="row mt-8">
             <div className="col-12 col-md-3">
               <RightNav title='Faq'/>
             </div>

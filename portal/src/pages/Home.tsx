@@ -5,26 +5,31 @@ import Breadcrumb from '../components/Breadcrumb'
 import Meta from '../components/Meta'
 import { useState } from 'react'
 import CreateGrievanceForm from '../features/grievance/components/CreateGrievanceForm'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { store } from '../app/store'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { RootState, store } from '../app/store'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { fetchGrievers, selectAllGrievers } from '../features/griever/grieverSlice'
+import { connect } from 'react-redux'
 
 
 
 const Home = (props: any) => {
+  const location = useLocation()
 
-  //  useEffect( () => {
-  //    if(performance.navigation.type == 2){
-  //       location.reload();
-  //     }
-  // }, [])
 
-  // get global state
-  const state = store.getState()
-
-  if (!state.auth.isAuthenticated) {
+  if (sessionStorage.getItem('authenticated') !== 'true') {
+    sessionStorage.setItem('current_location', location.pathname)
     return <Navigate to='/login' />
+  }else{
+    sessionStorage.setItem('current_location', location.pathname)
+   
   }
    
+ 
+  
+  
+  
+  
   return (
     <>
         <Meta title='Home'/>
@@ -51,8 +56,8 @@ const Home = (props: any) => {
                 </p>
 
                 <div className="form-group">
-                    <a className="text-body collapsed dropdown-toggle" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false">Record here... </a>
-                    <div className="row gx-5 collapse" id="collapseFilter">
+                    <a className="text-body collapsed dropdown-toggle" data-bs-toggle="collapse" href="#collapseFilter0" role="button" aria-expanded="false" style={{fontWeight: 800}}>Record here... </a>
+                    <div className="row gx-5 collapse mt-3" id="collapseFilter0">
                         <CreateGrievanceForm />
                     </div>
                 </div>
@@ -80,8 +85,9 @@ const Home = (props: any) => {
         </section>
     </>
   )
-}
 
+ 
+}
 
 
 

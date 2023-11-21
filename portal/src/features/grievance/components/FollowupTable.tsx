@@ -2,73 +2,58 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from '../../../app/hooks'
 import { selectAllClients } from '../../client/clientSlice'
+import { selectAllGrievances } from '../grievanceSlice'
 
 
-const FollowupTable = (props:any) => {
+const FollowupTable = () => {
   let tableHead: any
   let tableRow:any
-  
-  const clients = Array(useAppSelector(selectAllClients))[0].clients
-  let client = clients.find(client => client.client_id === '1')
-  // console.log(client)
+  let clients = useAppSelector(selectAllClients).clients
+  const grievances = useAppSelector(selectAllGrievances)
 
-  let grievances = props.data
-  console.log(grievances)
+  let data = Array()
 
-  let single_client: any
-  for (let index = 0; index < grievances.length; index++) {
-    if (clients.find(client => client.client_id === grievances[index].client)){
-      single_client = clients.find(client => client.client_id === grievances[index].client)
-      break
-    }
 
-  }
-
-  
-  const fetchGrievance = (e: any) => {
-    console.log(e)
-  }
-
-  
-  if (props.data.grievances !== null){
-  
+  if (grievances !== null){
       tableHead = (
                     <tr>
-                      <th >Index</th>
-                      <th>Grievance</th>
+                      <th >Reference</th>
+                      <th>Title</th>
+                      <th>Griever</th>
                       <th>Client</th>
                       <th>Agent</th>
                       <th>Status</th>
-                      <th>Action</th>
                     </tr>
                   )
+      
+      for (const key in grievances) {
+        if (Object.prototype.hasOwnProperty.call(grievances, key)) {
+          const grievance = grievances[key];
+          data.push(grievance)
+        }
+      }
+
         
-      tableRow = props.data.map( (grievance: any) => 
+      tableRow = data.map((grievance: any) => 
         (
-          
-          <tr key={grievance[0].grievance_id}>
+          <tr key={grievance.grievance_id}>
               <td>
-                <Link to="/single">{grievance[0].grievance_id}</Link>
+                <Link to='/single' state={{'grievance': grievance, 'clients': clients}}>{grievance.ref}</Link>
               </td>
               <td>
-                {grievance[0].title}
+                {grievance.title}
               </td>
               <td>
-                {single_client?.name}
+                {grievance.griever}
               </td>
               <td>
-                {grievance[0].severity}
+                {grievance.client}
               </td>
               <td>
-                {grievance[0].grievance_status}
+                {grievance.agent}
               </td>
-              <td style={{alignContent: 'center'}}>  
-                    {/* <Link to='/single'><i className="fa-regular fa-eye"></i></Link>
-                    &nbsp;
-                    &nbsp; */}
-                    <Link data-bs-toggle="offcanvas" to="#modalShoppingCart" onClick={fetchGrievance}><i className="fa-regular fa-message"></i></Link>
-
-
+              <td>
+                {grievance.operational_status}
               </td>
             </tr>
           )
@@ -79,6 +64,7 @@ const FollowupTable = (props:any) => {
   return (
     <div className="card shadow" data-simplebar="">
           <div className="card-body" style={{alignContent:'center'}}>
+            {/* 
             <div className="row mb-6">
               <div className="col-md-6">
                 <select className="form-select form-control form-control-xxs" style={{width:25 + '%'}}>
@@ -99,8 +85,8 @@ const FollowupTable = (props:any) => {
                   </div>
                 </div>
               </div>
-             
-            </div>
+            </div> 
+            */}
             <table className="table table-responsive" style={{tableLayout: 'auto', width: 100 + '%', fontSize: 15 + 'px'}}>
             <thead>
                 {tableHead}

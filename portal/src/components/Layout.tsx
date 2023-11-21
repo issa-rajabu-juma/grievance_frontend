@@ -5,18 +5,29 @@ import Footer from './Footer'
 import { connect } from 'react-redux'
 import {checkAuthenticated, loadUser} from '../features/user/userSlice' 
 import {fetchClients} from '../features/client/clientSlice'
+import { store } from '../app/store'
+import { useAppDispatch } from '../app/hooks'
+import { fetchSeverities } from '../features/severity/severitySlice'
+import { fetchNatures } from '../features/nature/natureSlice'
+import { fetchGrievers } from '../features/griever/grieverSlice'
 
-const Layout = (props:any) => {
+const Layout = () => {
+  const dispatch = useAppDispatch()
+  
+  const dispatchInit =async () => {
+    await Promise.all([
+      dispatch(checkAuthenticated()),
+      dispatch(loadUser()),
+    ])
+  }
+
   
   useEffect( () => {
     if (localStorage.getItem('access')) {
-      props.checkAuthenticated()
-      props.loadUser()
-      // props.fetchClients()
-
+        dispatchInit()
     }
-    
   }, [])
+
 
   return (
     <>
@@ -27,4 +38,4 @@ const Layout = (props:any) => {
   )
 }
 
-export default connect(null, {checkAuthenticated, loadUser})(Layout)
+export default Layout

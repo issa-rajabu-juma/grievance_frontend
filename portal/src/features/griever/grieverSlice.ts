@@ -3,42 +3,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 import axios from 'axios'
 
-// // INTERFACES
-// interface Griever {
-//     fname: string
-//     lname: String
-//     mname: string
-//     gender: String
-//     age: string
-//     mobile_no: string
-//     street: string
-//     ward: string
-//     district: string
-//     region: string
-//     marital_status: string
-//     spouse: string
-//     kin: string
-    
-    
-    
-// }
+const base_url = 'http://localhost:8000/griever/'
 
-// export interface GrieverState{
-//     griever: Griever[],
-//     status: any,
-//     errors: any
-// }
 
 // INITIAL STATE
 const initialState = {
-    griever: {},
+    grievers: {},
     status: 'idle',
     errors: '',
 }
 
 // LOGICS
 export const newGriever:any = createAsyncThunk('griever/newGriever', async (data:any) => {
-    console.log(data)
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -46,7 +22,37 @@ export const newGriever:any = createAsyncThunk('griever/newGriever', async (data
             'Accept': 'application/json'
         }
     }
-    const response = await axios.post('http://localhost:8000/griever/', data, config)
+    const response = await axios.post(base_url, data, config)
+    return response.data
+})
+
+export const fetchGrievers = createAsyncThunk('griever/fetchGrievers', async () => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+
+    const response = await axios.get(base_url, config)
+    return response.data
+})
+
+export const updateGriever:any = createAsyncThunk('griever/updateGriever', async (data:any) => {
+    console.log(data)
+    const id = data.griever_id
+    delete data.griever_id
+    console.log(data)
+    console.log(id)
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    }
+    const response = await axios.put(base_url + id + '/', data, config)
     return response.data
 })
 
@@ -63,9 +69,32 @@ export const grieverSlice = createSlice({
         })
         .addCase(newGriever.fulfilled, (state, action) => {
             state.status = 'griever added'
-            state.griever = action.payload
+            state.grievers = action.payload
         })
         .addCase(newGriever.rejected, (state, action) => {
+            state.status = 'failed'
+            state.errors = 'error'
+        })
+        .addCase(fetchGrievers.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(fetchGrievers.fulfilled, (state, action) => {
+            state.status = 'success'
+            state.grievers = action.payload
+        })
+        .addCase(fetchGrievers.rejected, (state, action) => {
+            state.status = 'failed'
+            state.errors = 'error'
+        })
+        .addCase(updateGriever.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(updateGriever.fulfilled, (state, action) => {
+            state.status = 'success'
+            // state.grievers = action.payload
+            console.log(action.payload)
+        })
+        .addCase(updateGriever.rejected, (state, action) => {
             state.status = 'failed'
             state.errors = 'error'
         })

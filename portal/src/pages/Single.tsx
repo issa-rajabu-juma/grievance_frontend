@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBarTop from '../components/NavBarTop'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
@@ -7,20 +7,48 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import FollowupTable from '../features/grievance/components/FollowupTable'
-import { selectAllGrievances } from '../features/grievance/grievanceSlice'
+import { fetchGrievances, selectAllGrievances } from '../features/grievance/grievanceSlice'
 import AttachmentTable from '../features/grievance/components/AttachmentTable'
 import { store } from '../app/store'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { fetchClients } from '../features/client/clientSlice'
+import { fetchGrievers } from '../features/griever/grieverSlice'
 
 
-const Single = () => {
-  const state = store.getState()
+const Single = (props: any) => {
+ const location = useLocation()
+ 
 
-  if (!state.auth.isAuthenticated) {
+ 
+
+  if (sessionStorage.getItem('authenticated') !== 'true') {
+    sessionStorage.setItem('current_location', location.pathname)
     return <Navigate to='/login' />
+  }else{
+    sessionStorage.setItem('current_location', location.pathname)
+  
   }
-   const grievances = useSelector(selectAllGrievances)
+
+  const grievance = location.state.grievance
+  const clients = location.state.clients
+  console.log(clients)
+  let clt
+  // let data = Array()
+  if (clients !== null){
+    for (const key in clients) {
+      if (Object.prototype.hasOwnProperty.call(clients, key)) {
+        const client = clients[key];
+        if (grievance.client === client.client_id) {
+          clt = client
+          break
+        }
+      }
+    }
+  }
+  console.log(clt)
+  console.log(grievance)
    
   return (
     <>
@@ -42,27 +70,56 @@ const Single = () => {
                     
                     <div className="card card-lg bg-light mb-8">
                       <div className="card-body">
-
-
-
                         
                         <div className="row">
 
                           <div className="col-md-12">
                             <h6 className="mb-2">Title</h6>
                             <p className="text-muted mb-3">
-                              Malalamiko ya mishahara
+                              {grievance.title}
                             </p>
 
                             <h6 className="mb-2">Description</h6>
                             <p className="text-muted mb-6" style={{justifyContent:'center'}}>
-                               She'd years darkness days. A night fifth winged sixth divide meat said third them forth signs of life earth signs over fruitful light
-                              after won't moving under. Thing yielding upon seed. Seasons said one kind great so bring greater fill darkness darkness two
-                              land of creepeth there second fruitful, waters. Make don't void
+                              {grievance.description}
                             </p>
+
+                            <a className="text-body collapsed dropdown-toggle" data-bs-toggle="collapse" href="#collapseFilter" role="button" aria-expanded="false" style={{fontWeight: 800}}>More Description </a>
+                            <div className="row gx-5 collapse mt-3" id="collapseFilter">
+                                <div className="col-md-4">
+                                  <p className="mb-2" style={{fontWeight:800}}>Who</p>
+                                    <p className="text-muted mb-6" style={{justifyContent:'center'}}>
+                                      { (grievance.who !== null) ? grievance.who : 'N/A'}
+                                    </p>
+                                </div>
+                                <div className="col-md-8">
+                                  <p className="mb-2" style={{fontWeight:800}}>Did What</p>
+                                    <p className="text-muted mb-6" style={{justifyContent:'center'}}>
+                                      {(grievance.what !== null) ? grievance.what : 'N/A'}
+                                    </p>
+                                </div>
+                                <div className="col-md-4">
+                                  <p className="mb-2" style={{fontWeight:800}}>Where</p>
+                                    <p className="text-muted mb-6" style={{justifyContent:'center'}}>
+                                      {(grievance.where !== null) ? grievance.where : 'N/A'}
+                                    </p>
+                                </div>
+                                <div className="col-md-4">
+                                  <p className="mb-2" style={{fontWeight:800}}>Result</p>
+                                    <p className="text-muted mb-6" style={{justifyContent:'center'}}>
+                                      {(grievance.result !== null) ? grievance.result : 'N/A'}
+                                    </p>
+                                </div>
+                                <div className="col-md-4">
+                                  <p className="mb-2" style={{fontWeight:800}}>Comment</p>
+                                    <p className="text-muted mb-6" style={{justifyContent:'center'}}>
+                                      {(grievance.comments !== null) ? grievance.comments : 'N/A'}
+                                    </p>
+                                </div>
+                            </div>
                           </div>
 
-                          <div className="card card-sm">
+                          <div className="card card-sm mt-3">
                             <div className="card-body ">
                               <div className="row">
                                 <div className="col-6 col-lg-3">
@@ -71,7 +128,7 @@ const Single = () => {
 
                                   <p className="mb-lg-0 fs-sm fw-bold">
                                     <time>
-                                      01 Oct, 2019
+                                      {grievance.start_date.split('T')[0]}
                                     </time>
                                   </p>
 
@@ -83,7 +140,7 @@ const Single = () => {
                                   
                                   <p className="mb-lg-0 fs-sm fw-bold">
                                     <time>
-                                      High
+                                      {(grievance.severity === '1') ? 'Low' : (grievance.severity === '2') ? 'Medium' : 'High' }
                                     </time>
                                   </p>
 
@@ -95,7 +152,7 @@ const Single = () => {
 
                                 
                                   <p className="mb-0 fs-sm fw-bold">
-                                    New
+                                    {grievance.operational_status}
                                   </p>
 
                                 </div>
@@ -106,7 +163,7 @@ const Single = () => {
 
                                 
                                   <p className="mb-0 fs-sm fw-bold">
-                                    Issa Rajabu Juma
+                                    {(grievance.agent !== null) ? grievance.agent : 'Not Assigned'}
                                   </p>
 
                                 </div>
@@ -150,17 +207,16 @@ const Single = () => {
                       <div className="card-body">
 
                          <h6 className="mb-6">
-                              Client details
+                              Client
                             </h6>
 
                           
                             <p className="text-muted mb-0">
-                                Tanesco <br />
-                                3997 Dodoma <br />
-                                Mji wa serikari <br />
-                                45644 <br />
+                                {clt.name.toUpperCase()} <br />
+                                {clt.address + ' ' + clt.region.toUpperCase()}  <br />
+                                {clt.type} <br />
+                                {clt.phone} <br />
                                 Tanzania <br />
-                              {/* <FollowupTable data={grievances}/> */}
                             </p>
 
 
@@ -185,7 +241,7 @@ const Single = () => {
 
                         
                         <p className="text-muted mb-0">
-                          Tanesco<br />
+                          {grievance.workforce}<br />
                           Communication & Internal Affairs <br />
                           Head Office <br />
                           23 floor <br />
@@ -202,7 +258,7 @@ const Single = () => {
 
 
 
-                 <div className="col-12 col-lg-12">
+                 {/* <div className="col-12 col-lg-12">
 
                     
                     <div className="card card-lg bg-light mb-8">
@@ -223,7 +279,7 @@ const Single = () => {
                       </div>
                     </div>
 
-                  </div>
+                  </div> */}
               </div>
 
             </div>

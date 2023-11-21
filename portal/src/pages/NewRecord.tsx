@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NavBarTop from '../components/NavBarTop'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
@@ -7,16 +7,39 @@ import { useState } from 'react'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
 import Create from '../features/grievance/components/records/Create'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import New from '../features/grievance/components/records/pages/New'
 import { store } from '../app/store'
+import { useAppDispatch } from '../app/hooks'
+import { fetchNatures } from '../features/nature/natureSlice'
+import { fetchSeverities } from '../features/severity/severitySlice'
+import { fetchGrievers } from '../features/griever/grieverSlice'
+import { fetchClients } from '../features/client/clientSlice'
 
 
 const NewRecord = () => {
-  const state = store.getState()
+  const location = useLocation()
 
-  if (!state.auth.isAuthenticated) {
+  if (sessionStorage.getItem('authenticated') !== 'true') {
+    sessionStorage.setItem('current_location', location.pathname)
     return <Navigate to='/login' />
+  }else{
+    sessionStorage.setItem('current_location', location.pathname)
+    const dispatch = useAppDispatch()
+    
+    const dispatchInit = async () => {
+      await Promise.all([
+        dispatch(fetchNatures()),
+        dispatch(fetchSeverities()),
+        dispatch(fetchClients()),
+        dispatch(fetchGrievers()),
+      ])
+    }
+
+    useEffect( () => {
+          dispatchInit()
+    }, [])
+
   }
   return (
     <>
@@ -25,8 +48,8 @@ const NewRecord = () => {
         <Breadcrumb title='Create New'/>
        <section className="">
         <div className="container">
-          <Heading heading='Grieving' />
-          <div className="row" style={{marginTop:60 + 'px'}}>
+          {/* <Heading heading='Grieving' /> */}
+          <div className="row mt-8">
             <div className="col-12 col-md-3">
               <RightNav title='Create New'/>
             </div>
@@ -44,7 +67,7 @@ const NewRecord = () => {
                         <div className="tab-content">
                           <div className="tab-pane fade active show" id="descriptionTab">
                             <div className="row justify-content-center py-6">
-                              <div className="col-12 col-lg-10 col-xl-10">
+                              <div className="col-12 col-lg-10 col-xl-10" data-simplebar style={{maxHeight: 800 + "px"}}>
                                 <New />
                               </div>
                             </div>
