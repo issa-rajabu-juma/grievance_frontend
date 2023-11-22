@@ -27,52 +27,7 @@ const NavBarLast = () => {
           dispatchInit()
       }, [])
 
-  // const [avatar, setAvatar] = useState()
-  const grievers = useAppSelector(selectAllGrievers)
-  const user = useAppSelector(selectLoggedinUser)
-  const userKeysList = Object.keys(user).length
-  const grieverKeysList = Object.keys(grievers.grievers).length
-  var griever: any
-  
-  if (grieverKeysList > 0 && userKeysList > 0) {
-    var griever = getItemByUID(grievers.grievers, user.id)[0]
-    // console.log(griever)
-    // console.log(user)
-  }
-    
-      
-    // }
-
-    console.log(griever)
-    
-
-   const loggout = (e: any) => {
-        dispatch(logout())
-        navigate('/login')
-    }
-
-  
-  const handleAvatar = (e: any) => {
-    var avatar = e.target.files[0]
-    if (avatar) {
-      //  console.log(avatar)
-    // console.log(avatar.name)
-    var extension = avatar.name.split('.')[1]
-    // console.log(extension)
-    if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
-      console.log('file accepted')
-     
-      // more controls
-      // console.log(griever)
-       dispatch(updateGriever({griever_id: griever.griever_id, profile: avatar}, griever.griever_id))
-    }else {
-      console.log('not accepted')
-    }
-    }else {
-      console.log('no file')
-    }
-   
-  }
+ 
 
 
   const guestLinks = () => {  
@@ -94,6 +49,38 @@ const NavBarLast = () => {
   }
 
   const authLinks = () => {
+
+    const grievers = useAppSelector(selectAllGrievers)
+    const user = useAppSelector(selectLoggedinUser)
+    const userKeysList = Object.keys(user).length
+    const grieverKeysList = Object.keys(grievers.grievers).length
+    var griever: any
+    
+    if (grieverKeysList > 0 && userKeysList > 0) {
+      var griever = getItemByUID(grievers.grievers, user.id)[0]
+    }
+    
+    const handleAvatar = (e: any) => {
+      var avatar = e.target.files[0]
+      if (avatar) {
+        //  console.log(avatar)
+      // console.log(avatar.name)
+      var extension = avatar.name.split('.')[1]
+      // console.log(extension)
+      if (extension === 'jpg' || extension === 'jpeg' || extension === 'png') {
+        console.log('file accepted')
+      
+        // more controls
+        // console.log(griever)
+        dispatch(updateGriever({griever_id: griever.griever_id, profile: avatar}, griever.griever_id))
+      }else {
+        console.log('not accepted')
+      }
+      }else {
+        console.log('no file')
+      }
+    
+    }
     return (
       <>
        <li className="nav-item">
@@ -157,20 +144,14 @@ const NavBarLast = () => {
     <>
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
       <div className="container">
-    
         <Link className="navbar-brand" to="/">
           GRM.
         </Link>
-    
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-    
         <div className="collapse navbar-collapse" id="navbarCollapse">
-    
-          
           <ul className="navbar-nav mx-auto">
-            
             <li className="nav-item">
               <Link className="nav-link" to="/home">HOME</Link>
             </li>
@@ -187,19 +168,8 @@ const NavBarLast = () => {
               <Link className="nav-link" to="/faq">FAQ</Link>
             </li>
           </ul>
-    
-          
           <ul className="navbar-nav flex-row">
-            
             {links}
-
-           
-
-            
-            
-            
-           
-            
           </ul>
     
         </div>

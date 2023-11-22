@@ -11,25 +11,16 @@ import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { fetchGrievers, selectAllGrievers } from '../features/griever/grieverSlice'
 import { connect } from 'react-redux'
 
-
-
 const Home = (props: any) => {
   const location = useLocation()
-
 
   if (sessionStorage.getItem('authenticated') !== 'true') {
     sessionStorage.setItem('current_location', location.pathname)
     return <Navigate to='/login' />
   }else{
     sessionStorage.setItem('current_location', location.pathname)
-   
   }
    
- 
-  
-  
-  
-  
   return (
     <>
         <Meta title='Home'/>
@@ -62,8 +53,6 @@ const Home = (props: any) => {
                     </div>
                 </div>
                 
-                
-                
                 <h6 className="mt-8 mb-5 text-body">Features of Grievance</h6>
                 <ol>
                   <li>
@@ -85,8 +74,6 @@ const Home = (props: any) => {
         </section>
     </>
   )
-
- 
 }
 
 

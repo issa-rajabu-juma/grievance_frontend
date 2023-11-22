@@ -4,8 +4,8 @@ import Breadcrumb from '../components/Breadcrumb'
 import Meta from '../components/Meta'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
-import Closed from '../features/grievance/components/records/pages/Closure'
-import { store } from '../app/store'
+import Closed from '../../trash/Closure'
+import { RootState, store } from '../app/store'
 import { Navigate, useNavigate, useNavigation } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import { useAppDispatch } from '../app/hooks'
@@ -13,9 +13,10 @@ import { fetchClients } from '../features/client/clientSlice'
 import { fetchGrievers } from '../features/griever/grieverSlice'
 import { fetchGrievances } from '../features/grievance/grievanceSlice'
 import FollowupTable from '../features/grievance/components/FollowupTable'
+import { connect } from 'react-redux'
 
 
-const ClosedRecord = () => {
+const ClosedRecord = (props: any) => {
   const location = useLocation()
 
   if (sessionStorage.getItem('authenticated') !== 'true') {
@@ -57,13 +58,13 @@ const ClosedRecord = () => {
 
                       
                       <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne" aria-expanded="true">
-                        Closed Grievances
+                        Closed Grievances &nbsp; <span className="badge bg-dark">1</span>
                       </a>
 
                       
                       <div className="collapse show" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
                         <div className="mt-5">
-                         <FollowupTable />
+                          <FollowupTable data={{grievances: props.grievances, clients: props.clients, bin: 'closed'}}/>
                         </div>
                       </div>
 
@@ -73,13 +74,13 @@ const ClosedRecord = () => {
 
                       
                       <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne">
-                        Re-opened Grievances
+                        Re-opened Grievances &nbsp; <span className="badge bg-dark">2</span>
                       </a>
 
                       
                       <div className="collapse" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
                         <div className="mt-5">
-                         <FollowupTable />
+                          <FollowupTable data={{grievances: props.grievances, clients: props.clients, bin: 'reopened'}}/>
                         </div>
                       </div>
 
@@ -97,4 +98,11 @@ const ClosedRecord = () => {
   )
 }
 
-export default ClosedRecord
+const mapStateToProps = (state: RootState) => {
+  return {
+    grievances: state.grievances,
+    clients: state.clients
+  }
+}
+
+export default connect(mapStateToProps, null) (ClosedRecord)

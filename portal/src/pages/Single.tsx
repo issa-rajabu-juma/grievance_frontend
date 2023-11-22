@@ -151,7 +151,7 @@ const Single = (props: any) => {
                                   <h6 className="heading-xxxs text-muted">Status:</h6>
 
                                 
-                                  <p className="mb-0 fs-sm fw-bold">
+                                  <p className="mb-0 fs-sm fw-bold" style={{textTransform: 'capitalize'}}>
                                     {grievance.operational_status}
                                   </p>
 

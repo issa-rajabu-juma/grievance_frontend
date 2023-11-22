@@ -1,15 +1,15 @@
 import React from 'react'
-import FollowupTable from '../../FollowupTable'
+import FollowupTable from '../src/features/grievance/components/FollowupTable'
 import { 
   selectAllGrievances, 
   selectGrievanceStatus, 
   selectGrievanceError,
   fetchGrievances 
-} from '../../../../grievance/grievanceSlice'
+} from '../src/features/grievance/grievanceSlice'
 import { 
   useAppDispatch, 
   useAppSelector 
-} from '../../../../../app/hooks'
+} from '../src/app/hooks'
 import { useEffect } from 'react'
 
 const Open = () => {

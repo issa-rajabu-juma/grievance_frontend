@@ -673,3 +673,10 @@
     //                 </div>
     //             </form>
     //         )
+
+          
+
+   const loggout = (e: any) => {
+        dispatch(logout())
+        navigate('/login')
+    }
