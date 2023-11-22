@@ -57,6 +57,11 @@ const MainProfile = () => {
             <td>Street</td>
             <td>{griever.street}</td>
         </tr>
+        <tr>
+            <td>Postal Address</td>
+            <td>{griever.postal_address}</td>
+        </tr>
+        
         </tbody>
       ))
 
