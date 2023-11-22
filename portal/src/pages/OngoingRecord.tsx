@@ -4,17 +4,18 @@ import Breadcrumb from '../components/Breadcrumb'
 import Meta from '../components/Meta'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
-import Ongoing from '../features/grievance/components/records/pages/Ongoing'
-import { store } from '../app/store'
+import Ongoing from '../../trash/Ongoing'
+import { RootState, store } from '../app/store'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { fetchClients } from '../features/client/clientSlice'
 import { fetchGrievers } from '../features/griever/grieverSlice'
 import { fetchGrievances, selectAllGrievances } from '../features/grievance/grievanceSlice'
 import FollowupTable from '../features/grievance/components/FollowupTable'
+import { connect } from 'react-redux'
 
 
-const OngoingRecord = () => {
+const OngoingRecord = (props: any) => {
 
  const location = useLocation()
 
@@ -39,6 +40,7 @@ const OngoingRecord = () => {
     }, [])
   }
 
+
   return (
      <>
         <Meta title='Ongoing'/>
@@ -57,13 +59,13 @@ const OngoingRecord = () => {
 
                       
                       <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne" aria-expanded="true">
-                        Ongoing Grievances
+                        Ongoing Grievances &nbsp; <span className="badge bg-dark">1</span>
                       </a>
 
                       
                       <div className="collapse show" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
                         <div className="mt-5">
-                         <FollowupTable />
+                          <FollowupTable data={{grievances: props.grievances, clients: props.clients, bin: 'ongoing'}}/>
                         </div>
                       </div>
 
@@ -73,13 +75,14 @@ const OngoingRecord = () => {
 
                       
                       <a className="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" href="#faqCollapseOne">
-                        Resolved Grievances
+                        Resolved Grievances &nbsp; <span className="badge bg-dark">2</span>
                       </a>
 
                       
                       <div className="collapse" id="faqCollapseOne" data-bs-parent="#faqCollapseParentOne">
                         <div className="mt-5">
-                         <FollowupTable />
+                          <FollowupTable data={{grievances: props.grievances, clients: props.clients, bin: 'resolved'}}/>
+
                         </div>
                       </div>
 
@@ -97,4 +100,11 @@ const OngoingRecord = () => {
   )
 }
 
-export default OngoingRecord
+const mapStateToProps = (state: RootState) => {
+  return {
+    grievances: state.grievances,
+    clients: state.clients
+  }
+}
+
+export default connect(mapStateToProps, null) (OngoingRecord)

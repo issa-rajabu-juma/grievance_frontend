@@ -6,15 +6,13 @@ import Meta from '../components/Meta'
 import { useState } from 'react'
 import Heading from '../features/grievance/components/records/Heading'
 import RightNav from '../features/grievance/components/records/RightNav'
-import Create from '../features/grievance/components/records/Create'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import New from '../features/grievance/components/records/pages/New'
-import { store } from '../app/store'
 import { useAppDispatch } from '../app/hooks'
 import { fetchNatures } from '../features/nature/natureSlice'
 import { fetchSeverities } from '../features/severity/severitySlice'
 import { fetchGrievers } from '../features/griever/grieverSlice'
 import { fetchClients } from '../features/client/clientSlice'
+import CreateGrievanceForm from '../features/grievance/components/CreateGrievanceForm'
 
 
 const NewRecord = () => {
@@ -68,7 +66,7 @@ const NewRecord = () => {
                           <div className="tab-pane fade active show" id="descriptionTab">
                             <div className="row justify-content-center py-6">
                               <div className="col-12 col-lg-10 col-xl-10" data-simplebar style={{maxHeight: 800 + "px"}}>
-                                <New />
+                                <CreateGrievanceForm />
                               </div>
                             </div>
                           </div>

@@ -2,8 +2,8 @@ import React from 'react'
 import NavBarTop from '../components/NavBarTop'
 import NavBarLast from '../components/NavBarLast'
 import Breadcrumb from '../components/Breadcrumb'
-import FaqMain from '../features/grievance/components/records/pages/FaqList'
-import FaqList from '../features/grievance/components/records/pages/FaqList'
+import FaqMain from '../../trash/FaqList'
+import FaqList from '../../trash/FaqList'
 
 const Faq = () => {
   return (

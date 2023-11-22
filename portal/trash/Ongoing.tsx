@@ -1,7 +1,7 @@
 import React from 'react'
-import FollowupTable from '../../FollowupTable'
+import FollowupTable from '../src/features/grievance/components/FollowupTable'
 import { useSelector } from 'react-redux'
-import { selectAllGrievances } from '../../../grievanceSlice'
+import { selectAllGrievances } from '../src/features/grievance/grievanceSlice'
 
 
 const Ongoing = () => {
@@ -9,7 +9,8 @@ const Ongoing = () => {
   console.log(grievances)
 
   return (
-    <FollowupTable data={grievances} />
+    // <FollowupTable data={grievances} />
+    <></>
   )
 }
 

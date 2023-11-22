@@ -3,38 +3,47 @@ import { Link } from 'react-router-dom'
 import { useAppSelector } from '../../../app/hooks'
 import { selectAllClients } from '../../client/clientSlice'
 import { selectAllGrievances } from '../grievanceSlice'
+import { object2array, segmentGrievances } from '../../../app/helpers'
 
 
-const FollowupTable = () => {
-  let tableHead: any
+const FollowupTable = (props: any) => {
+  let tableHead = (
+                  <tr>
+                    <th >Reference</th>
+                    <th>Title</th>
+                    <th>Griever</th>
+                    <th>Client</th>
+                    <th>Agent</th>
+                    <th>Status</th>
+                  </tr>
+                )
+  let defaultRow:any
+  let anonymousRow:any
+  let ongoingRow:any
+  let resolvedRow:any
+  let closedRow:any
+  let reopenedRow:any
   let tableRow:any
-  let clients = useAppSelector(selectAllClients).clients
-  const grievances = useAppSelector(selectAllGrievances)
+  let clients = props.data.clients.clients
+  const grievances = props.data.grievances.grievances
+  const grievancesKeyList = Object.keys(grievances)
+  const clientsKeyList = Object.keys(clients)
 
-  let data = Array()
+ 
+  var bin = props.data.bin
+  var defaultData = segmentGrievances(grievances, 'default')
+  var anonymousData = segmentGrievances(grievances, 'anonymous')
+  var ongoingData = segmentGrievances(grievances, 'ongoing')
+  var resolvedData = segmentGrievances(grievances, 'resolved')
+  var closedData = segmentGrievances(grievances, 'closed')
+  var reopenedData = segmentGrievances(grievances, 'reopened')
 
 
-  if (grievances !== null){
-      tableHead = (
-                    <tr>
-                      <th >Reference</th>
-                      <th>Title</th>
-                      <th>Griever</th>
-                      <th>Client</th>
-                      <th>Agent</th>
-                      <th>Status</th>
-                    </tr>
-                  )
-      
-      for (const key in grievances) {
-        if (Object.prototype.hasOwnProperty.call(grievances, key)) {
-          const grievance = grievances[key];
-          data.push(grievance)
-        }
-      }
+  if (grievancesKeyList.length > 0 && clientsKeyList.length > 0){
 
-        
-      tableRow = data.map((grievance: any) => 
+    if (bin === 'default') {
+      const grcz = object2array(defaultData)
+      defaultRow = grcz.map((grievance: any) => 
         (
           <tr key={grievance.grievance_id}>
               <td>
@@ -59,7 +68,157 @@ const FollowupTable = () => {
           )
         )
     }
-  
+    
+    if (bin === 'anonymous') {
+      const grcz = object2array(anonymousData)
+      anonymousRow = grcz.map((grievance: any) => 
+        (
+          <tr key={grievance.grievance_id}>
+              <td>
+                <Link to='/single' state={{'grievance': grievance, 'clients': clients}}>{grievance.ref}</Link>
+              </td>
+              <td>
+                {grievance.title}
+              </td>
+              <td>
+                {grievance.griever}
+              </td>
+              <td>
+                {grievance.client}
+              </td>
+              <td>
+                {grievance.agent}
+              </td>
+              <td>
+                {grievance.operational_status}
+              </td>
+            </tr>
+          )
+        )
+    }
+
+     if (bin === 'ongoing') {
+      const grcz = object2array(ongoingData)
+      ongoingRow = grcz.map((grievance: any) => 
+        (
+          <tr key={grievance.grievance_id}>
+              <td>
+                <Link to='/single' state={{'grievance': grievance, 'clients': clients}}>{grievance.ref}</Link>
+              </td>
+              <td>
+                {grievance.title}
+              </td>
+              <td>
+                {grievance.griever}
+              </td>
+              <td>
+                {grievance.client}
+              </td>
+              <td>
+                {grievance.agent}
+              </td>
+              <td>
+                {grievance.operational_status}
+              </td>
+            </tr>
+          )
+        )
+    }
+   
+
+     if (bin === 'resolved') {
+      const grcz = object2array(resolvedData)
+      resolvedRow = grcz.map((grievance: any) => 
+        (
+          <tr key={grievance.grievance_id}>
+              <td>
+                <Link to='/single' state={{'grievance': grievance, 'clients': clients}}>{grievance.ref}</Link>
+              </td>
+              <td>
+                {grievance.title}
+              </td>
+              <td>
+                {grievance.griever}
+              </td>
+              <td>
+                {grievance.client}
+              </td>
+              <td>
+                {grievance.agent}
+              </td>
+              <td>
+                {grievance.operational_status}
+              </td>
+            </tr>
+          )
+        )
+    }
+   
+
+     if (bin === 'closed') {
+      const grcz = object2array(closedData)
+      closedRow = grcz.map((grievance: any) => 
+        (
+          <tr key={grievance.grievance_id}>
+              <td>
+                <Link to='/single' state={{'grievance': grievance, 'clients': clients}}>{grievance.ref}</Link>
+              </td>
+              <td>
+                {grievance.title}
+              </td>
+              <td>
+                {grievance.griever}
+              </td>
+              <td>
+                {grievance.client}
+              </td>
+              <td>
+                {grievance.agent}
+              </td>
+              <td>
+                {grievance.operational_status}
+              </td>
+            </tr>
+          )
+        )
+    }
+   
+
+     if (bin === 'reopened') {
+      const grcz = object2array(reopenedData)
+      reopenedRow = grcz.map((grievance: any) => 
+        (
+          <tr key={grievance.grievance_id}>
+              <td>
+                <Link to='/single' state={{'grievance': grievance, 'clients': clients}}>{grievance.ref}</Link>
+              </td>
+              <td>
+                {grievance.title}
+              </td>
+              <td>
+                {grievance.griever}
+              </td>
+              <td>
+                {grievance.client}
+              </td>
+              <td>
+                {grievance.agent}
+              </td>
+              <td>
+                {grievance.operational_status}
+              </td>
+            </tr>
+          )
+        )
+    }
+   
+   
+  }
+
+
+
+
+ 
 
   return (
     <div className="card shadow" data-simplebar="">
@@ -92,7 +251,7 @@ const FollowupTable = () => {
                 {tableHead}
             </thead>
             <tbody>
-                {tableRow}
+                {(props.data.bin === 'default') ? defaultRow : (props.data.bin === 'anonymous') ? anonymousRow: (props.data.bin === 'ongoing') ? ongoingRow: (props.data.bin === 'resolved') ? resolvedRow: (props.data.bin === 'closed') ? closedRow: (props.data.bin === 'reopened') ? reopenedRow: tableRow}
             </tbody>
             </table>
         </div>
